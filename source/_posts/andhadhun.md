@@ -2,6 +2,8 @@
 title: 《调音师》
 tags:
     - 调音师
+categories: 电影
+thumbnail: '../assets/post-img/tiaoyinshi.jpg'
 ---
 
 

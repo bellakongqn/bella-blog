@@ -6,6 +6,8 @@ tags:
     - sign up
     - toggle
     - createSwitchNavigator
+categories: React-native
+thumbnail: '../assets/post-img/react-native.png'
 ---
 ** 登录|注册页设计及它与登陆后首页的变换 **
 <!--more-->

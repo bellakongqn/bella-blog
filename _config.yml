@@ -8,7 +8,7 @@ subtitle: 一只凶兔子😤
 description: 这里记录 life & 🙌
 keywords: 博客
 author: bella & gege
-language: zh
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yilia
+theme: icarus
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

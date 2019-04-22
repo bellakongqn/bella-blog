@@ -7,11 +7,11 @@ thumbnail: '../assets/post-img/Vue-demo.png'
 ---
 
 #### Vue-cli 新建项目
-
+<!-- more -->
 -----------
 
 1. 安装[node.js](https://nodejs.org/en/)
-<!-- more -->
+
 ![](../assets/post-img/node.js.png)
 
 一直next即可，安装完成会自动添加node及npm环境变量,安装完成之后查看版本号：

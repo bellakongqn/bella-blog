@@ -6,6 +6,7 @@ categories: javascript
 thumbnail: '../assets/post-img/array.jpg'
 ---
 数组操作
+<!-- more -->
 a = [1,2,3] b=[3,2,1]
 1. push() 在当前数组的最后面添加插入的值，改变原数组
 a.push("4") => 

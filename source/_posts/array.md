@@ -33,7 +33,7 @@ b为 [2,1]
 6. concat() 链接两个|多个数组，不改变原数组，返回新的数组
 var c = a.concat(b) =>
 c为 [1,2,3,3,2,1]
-7. join() 将数组中的所有元素转换为一个字符串
+7. join() 将数组中的所有元素转换为一个字符串，不改变原数组
 a.join() =>
 返回值为 :  1,2,3
 a.join('-') =>
@@ -49,3 +49,14 @@ console.log(newstr);  // banana banana
 
 ```
  g表示替换全部apple,i表示忽略大小写
+9. map() 对数组元素进行装饰，不修改原数组
+const c = a.map(x => x * 2);
+console.log(c);
+c为[2,4,6]
+函数
+10. filiter() 对数组元素进行删选，筛选出符合条件的元素，不改变原数组
+const d = a.filter((item) => item >1);
+console.log(d);
+d为[2,3]
+11. reduce() 对数组中的每个元素执行一个由您提供的reducer函数(升序执行)，将其结果汇总为单个返回值,
+它接受四个参数：Accumulator (acc) (累计器) 、Current Value (cur) (当前值) 、Current Index (idx) (当前索引) 、Source Array (src) (源数组)

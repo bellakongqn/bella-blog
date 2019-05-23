@@ -19,7 +19,11 @@ dva new Dva-demo
 
 3. 进入项目
 cd Dva-test
+
 4. 启动项目
 npm  start
+
 5. 启动界面
 ![](/assets/post-img/dva.png)
+
+

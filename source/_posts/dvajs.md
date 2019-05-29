@@ -52,3 +52,5 @@ dva 目录结构
 |   |── index.less     # 样式
 |   └── index.html     
 ```
+
+抽出Model

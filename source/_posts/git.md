@@ -39,5 +39,8 @@ fatal: Authentication failed for 'http://********
     ![](/assets/post-img/copyAddress.png)
    9.git push -u origin master
     将本地修改推送到远程分支上
+  6. git 切换分支开发
+  git checkout -b 分支名
+  比如 git checkout -b dev
 
 

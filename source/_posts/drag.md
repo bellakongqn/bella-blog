@@ -5,7 +5,8 @@ tags:
 categories: js
 
 ---
-#### 拖拽的使用
+#### 拖拽的使用 
+[git地址](https://github.com/bellakongqn/draggable.git)
 
 --------
 1. 鼠标实现简单拖拽-1
@@ -212,6 +213,220 @@ categories: js
             moveDiv.style.cssText = "border:1px #fff solid;";
 
         }
+    </script>
+</body>
+
+</html>
+
+```
+3. 拖拽文件上传
+- 上面提到从操作系统向浏览器中拖动文件时，不会触发dragstart 和dragend 事件,因此只绑定了dragover|dragenter|drop事件
+- FileReader异步读取存储在用户计算机上的文件
+- readAsArrayBuffer(file)	按字节读取文件内容，结果用ArrayBuffer对象表示
+- readAsBinaryString(file)	按字节读取文件内容，结果为文件的二进制串
+- readAsDataURL(file)	读取文件内容，结果用data:url的字符串形式表示可用于展示图片
+  会将文件内容进行base64编码后输出,由于媒体文件的src属性，可以通过采用网络地址或base64的方式显示，
+  因此我们可以利用readAsDataURL实现对图片的预览。
+- readAsText(file,encoding)	按字符读取文件内容，结果用字符串形式表示
+- abort()	终止文件读取操作
+- 事件 (文件上传进度提醒)
+    onabort	当读取操作被中止时调用
+    onerror	当读取操作发生错误时调用
+    onload	当读取操作成功完成时调用
+    onloadend	当读取操作完成时调用，无论成功或失败
+    onloadstart	当读取操作开始时调用
+    onprogress	在读取数据过程中周期性调用
+```
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>drag file</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.container {
+			width: 60%;
+			max-width: 600px;
+			height: 320px;
+			padding: 15px;
+			margin: 20px auto 0;
+			border-radius: 10px;
+			background-color: #fce4ec;
+		}
+		.dashboard {
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			padding: 12px;
+			border: 3px dashed #F8BBD0;
+			border-radius: 5px;
+			font-size: 20px;
+			color: #2c1612;
+			cursor: text;
+			white-space: pre-wrap; 
+			/*word-break: break-all;*/
+			word-wrap: break-word;
+			overflow-y: auto;
+		}
+        #img{
+            width: 200px;
+            margin-top: 60px;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+        <div id="dashboard" class="dashboard"></div>
+        <img src="" id="img">
+        <div id="fileList">
+          <p>No files selected!</p>
+        </div>
+	</div>
+    <script type="text/javascript">
+        var count = 0;
+        var dashboard = document.getElementById("dashboard");
+        var img = document.getElementById("img");
+        fileList = document.getElementById("fileList");
+		dashboard.addEventListener("dragover", function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+		})
+		dashboard.addEventListener("dragenter", function (e) {
+			e.preventDefault()
+			e.stopPropagation()
+        })
+        // 点击上传与拖拽上传类似 只需讲drop事件里的方法添加到click,稍微修改即可
+        // 见inputFile
+		dashboard.addEventListener("drop", function (e) {
+			// 必须要禁用浏览器默认事件
+            e.preventDefault()
+            // 它可以阻止事件触发后默认动作的发生
+            e.stopPropagation()
+            // 阻止捕获和冒泡阶段中当前事件的进一步传播。
+            var files = this.files || e.dataTransfer.files
+            // 显示多个文件文件名
+            for(i= 0 ; i<files.length;i++){
+                const info = document.createElement("span");
+                info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
+                dashboard.appendChild(info)
+            }
+            // 读取文件内容
+			// var reader = new FileReader()
+			// reader.readAsText(files[0], 'utf-8')
+			// reader.onload = function (evt) {
+			// 	var text = evt.target.result
+			// 	dashboard.innerText = text
+            // }
+            
+            // 显示单张图片内容 
+            var reader = new FileReader()
+            reader.readAsDataURL(files[0]);//发起异步请求
+            reader.onload = function(e){
+                //读取完成后，将结果赋值给img的src
+                img.src = this.result;
+                console.log("加载成功")
+            };
+            // 显示多张图片 一次性添加多张图 ,分开添加只能现在最新添加的
+
+            if (!files.length) {
+                fileList.innerHTML = "<p>No files selected!</p>";
+            } else {
+                fileList.innerHTML = "";
+                const list = document.createElement("ul");
+                fileList.appendChild(list);
+                for (let i = 0; i < files.length; i++) {
+                const li = document.createElement("li");
+                list.appendChild(li);
+                
+                const img = document.createElement("img");
+                img.src = window.URL.createObjectURL(files[i]);
+                img.height = 60;
+                img.onload = function() {
+                    window.URL.revokeObjectURL(this.src);
+                    // 静态方法用来释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象
+                }
+                li.appendChild(img);
+                const info = document.createElement("span");
+                info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
+                li.appendChild(info);
+                }
+            }
+
+            // 加载进度 可以添加进度条
+            reader.onloadstart = function(){
+                console.log("开始加载")
+            }
+            reader.onloadend= function(){
+                console.log("加载结束")
+            }
+            reader.onprogress = function(){
+                count++;
+                console.log("加载中"+count)
+            }
+		})
+	</script>
+</body>
+</html>
+```
+4. 点击实现文件上传+图片预览
+```
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>图片上传预览</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="http://www.codefans.net/ajaxjs/jquery-1.6.2.min.js"></script>
+</head>
+
+<body>
+        <input type="file" id="fileElem" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+        <a href="#" id="fileSelect">Select some files</a> 
+        <div id="fileList">
+          <p>No files selected!</p>
+        </div>
+    <script>
+    window.URL = window.URL || window.webkitURL;
+
+const fileSelect = document.getElementById("fileSelect"),
+    fileElem = document.getElementById("fileElem"),
+    fileList = document.getElementById("fileList");
+
+fileSelect.addEventListener("click", function (e) {
+  if (fileElem) {
+    fileElem.click();
+  }
+  e.preventDefault(); // prevent navigation to "#"
+}, false);
+
+function handleFiles(files) {
+  if (!files.length) {
+    fileList.innerHTML = "<p>No files selected!</p>";
+  } else {
+    fileList.innerHTML = "";
+    const list = document.createElement("ul");
+    fileList.appendChild(list);
+    for (let i = 0; i < files.length; i++) {
+      const li = document.createElement("li");
+      list.appendChild(li);
+      
+      const img = document.createElement("img");
+      img.src = window.URL.createObjectURL(files[i]);
+      img.height = 60;
+      img.onload = function() {
+        window.URL.revokeObjectURL(this.src);
+        // 静态方法用来释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象
+      }
+      li.appendChild(img);
+      const info = document.createElement("span");
+      info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
+      li.appendChild(info);
+    }
+  }
+}
     </script>
 </body>
 

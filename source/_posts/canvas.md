@@ -6,7 +6,7 @@ categories: canvas
 
 ---
 #### [canvas的使用](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial)
-
+<!-- more -->
 ---------
 ```
 <canvas id="tutorial" width="150" height="150"></canvas>

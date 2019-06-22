@@ -9,6 +9,7 @@ thumbnail: '../assets/post-img/dva.jpg'
 
 dva 是dva 是 react 和 redux 的最佳实践，最核心的是提供了 app.model 
 
+<!-- more -->
 ----------
 
 dva初始化项目

@@ -7,7 +7,7 @@ categories: js
 ---
 #### 拖拽的使用 
 [git地址](https://github.com/bellakongqn/draggable.git)
-
+<!-- more -->
 --------
 1. 鼠标实现简单拖拽-1
 原生js实现div推拽 源码（注释）

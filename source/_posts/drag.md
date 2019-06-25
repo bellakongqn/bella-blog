@@ -2,7 +2,7 @@
 title: 拖拽
 tags:
     - 拖拽 js
-categories: js
+categories: 拖拽
 
 ---
 #### 拖拽的使用 

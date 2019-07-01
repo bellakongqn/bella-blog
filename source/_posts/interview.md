@@ -75,6 +75,20 @@ display:inline
 display:inline-block
 > 1.简单来说就是将对象呈现为inline对象，但是对象的内容作为block对象呈现。之后的内联对象会被排列在同一行内。比如我们可以给一个link（a元素）inline-block属性值，使其既具有block的宽度高度特性又具有inline的同行特性。
 
+盒子模型：标准盒模型+怪异盒模型
+ 1. 标准盒模型
+ ![](/assets/post-img/content-box.png)
+ 盒子的总宽度为:一个块的总宽度= width + margin(左右) + padding(左右) + border(左右)
+ 2. 怪异盒模型
+ ![](/assets/post-img/border-box.png)
+ 一个块的总宽度= width + margin(左右)（即width已经包含了padding和border值)
+ 通过box-sizing 属性来设置采用哪种盒子模型
+ box-sizing : content-box || border-box || inherit;
+ 当为content-box时，将采取标准模式进行解析计算
+ 当为border-box时，将采取怪异模式解析计算
+ 当为inherit时，将从父元素来继承box-sizing属性的值
+
+
 #### HTML5
 
 -----------

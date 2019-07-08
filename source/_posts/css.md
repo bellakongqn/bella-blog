@@ -73,3 +73,49 @@ css进行按定制比例缩放
  width:100%;
  height:0;
  padding-bottom: 133.33%;
+
+2. css 文字超过添加···
+   实现单行文本的溢出显示省略号
+   ```
+   overflow: hidden;//盒子溢出隐藏
+   text-overflow:ellipsis;//文字溢出显示省略号
+   white-space: nowrap;//文字不换行
+   ```
+   多行文本溢出显示省略号
+   ```
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 3;
+   overflow: hidden;
+   ```
+
+   > 因使用了WebKit的CSS扩展属性，该方法适用于WebKit浏览器及移动端；
+   -webkit-line-clamp用来限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他的WebKit属性。常见结合属性：
+   display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
+   -webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。
+
+   兼容性处理
+
+   ```
+        p {
+        position: relative;
+        line-height: 20px;
+        max-height: 60px;
+        //将height设置为line-height的整数倍，防止超出的文字露出。
+        overflow: hidden;
+        }
+
+        p::after {//后伪元素
+        content: "...";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-left: 40px;
+        // 给p::after添加渐变背景可避免文字只显示一半。
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);
+        }   
+   ```
+

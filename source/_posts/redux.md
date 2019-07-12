@@ -60,10 +60,97 @@ Redux 整体数据流
 
 ![](/assets/post-img/redux-dataSource.png)
 
-Redux 的两个常用方法
 
-1. combineReducers
-2. bindActionCreators
+Redux 学习笔记3 
+
+基本概念+++
+
+1. Store 
+
+保存数据的地方，一个应用只能有一个store,Redux 提供createStore这个函数，用来生成 Store。
+
+```
+import { createStore } from 'redux';
+const store = createStore(fn);
+```
+
+createStore它接收一个函数作为参数，返回新生成的 Store 对象。
+
+2. State 
+
+> Store对象包含所有数据。如果想得到某个时点的数据，就要对 Store 生成快照。这种时点的数据集合，就叫做 State。当前时刻的 State，可以通过store.getState()拿到。
+
+```
+import { createStore } from 'redux';
+const store = createStore(fn);
+
+const state = store.getState();
+```
+
+3. Action
+
+State 改变会导致 View 变化 ，用户通过触发 View 上的 Action 来改变 state, action 是一个对象，必须包括type属性
+```
+const action = {
+  type: 'ADD_TODO',
+  payload: 'Learn Redux'
+};
+```
+
+4. Action Creator
+
+用来生产action的一个函数
+
+```
+function addTodo(text){
+   type:'ADD_TODO',
+   payload:{text}
+}
+```
+
+5. store.dispatch()
+
+store.dispatch()是 View 发出 Action 的唯一方法。
+
+```
+store.dispatch(addTodo('Learn Redux'));
+```
+
+6. Reducer
+
+> Store 收到 Action 以后，必须给出一个新的 State，这样 View 才会发生变化。这种 State 的计算过程就叫做 Reducer。Reducer 是一个函数，它接受 Action 和当前 State 作为参数，返回一个新的 State。
+
+```
+const initState = { count:0 };
+// reducer
+const counter = (state = initState,action) =>{
+    switch (action.type) {
+        case "PLUS_ONE":
+            return{count: state.count+1};
+        case "MINUS_ONE":
+                return{count: state.count-1};
+        case "CUSTOM_COUNT":
+                return { counter: state.count+ action.payload.count };
+        default:
+            break;
+    }
+    return state
+}
+```
+
+store.dispatch方法会触发 Reducer 的自动执行,因此 Store 需要知道 Reducer 函数，做法就是在生成 Store 的时候，将 Reducer 传入createStore方法。
+
+```
+const store = createStore(counter)
+```
+
+7. 纯函数 reducer 是一个纯函数
+
+Reducer 函数里面不能改变 State，必须返回一个全新的对象
+
+8. store.subscribe()
+ 
+可以直接监听到state的变化 ，unsubscribe()来接触监听
 
 
 

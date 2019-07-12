@@ -152,6 +152,60 @@ Reducer 函数里面不能改变 State，必须返回一个全新的对象
  
 可以直接监听到state的变化 ，unsubscribe()来接触监听
 
+Redux 学习笔记4
+
+1. Store 的实现
+
+它提供了三个方法
+  - store.getState()  
+  - store.dispatch()
+  - store.subscribe()
+
+2. Reducer 的拆分 combineReducers
+
+Reducer 函数负责生成 State，数据多的时候 reducer 变的十分庞大，可以使用 combineReducers 进行将reducer 拆分
+
+(下面写法前提 State 的属性名必须与子 Reducer 同名)
+
+```
+import { combineReducers } from 'redux';
+
+const userName = (state={},action) =>{
+    ....
+}
+
+const avatar = (state={},action)=>{
+    ...
+}
+
+const password = (state={},action) =>{
+    ...
+}
+
+const store = createStore( combineReducers({
+        userName,
+        avatar,
+        password,
+}))
+
+```
+
+你可以把所有子 Reducer 放在一个文件里面，然后统一引入。
+
+
+import { combineReducers } from 'redux'
+import * as reducers from './reducers'
+
+const reducer = createStore( combineReducers(reducers))
+
+![](/assets/post-img/redux-data-flow.png)
+
+
+
+
+
+
+
 
 
 

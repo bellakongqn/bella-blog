@@ -200,6 +200,64 @@ const reducer = createStore( combineReducers(reducers))
 
 ![](/assets/post-img/redux-data-flow.png)
 
+Redux 学习笔记5
+
+react-redux 
+
+> React-Redux 规定，所有的 UI 组件都由用户提供，容器组件则是由 React-Redux 自动生成。也就是说，用户负责视觉层，状态管理则是全部交给它。
+
+React-Redux 提供connect() 方法来将UI组件与容器组件连接起来
+
+```
+import { connect } from 'react-redux'
+const ConnectdCounter = connect(mapStateToProps,mapDispatchToProps)(Counter);
+```
+Counter 是UI组件， ConnectdCounter是由 React-Redux 通过connect方法自动生成的容器组件。
+
+connect 接收两个参数mapStateToProps  mapDispatchToProps
+
+mapStateToProps 建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系。
+
+```
+function mapStateToProps(state){
+    return{
+        count: state.count
+    }
+}
+```
+
+mapDispatchToProps() 用来建立 UI 组件的参数到store.dispatch方法的映射。也就是说，它定义了哪些用户的操作应该当作 Action，传给 Store。
+
+```
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({
+        plusOne,
+        minusOne
+    },dispatch)
+}
+```
+
+bindActionCreators() 使用 dispatch 把每个 action creator 包围起来，这样可以直接调用它们。
+
+```
+plusOne();
+minusOne()
+```
+
+<Provider> 组件
+
+```
+import { connect,Provider } from 'react-redux';
+<Provider store={store}>
+    <ConnectdCounter />
+</Provider>
+```
+这样Provider包裹的所有子组件都可以使用store里面的数据,原理类似contextApi
+
+
+
+
+
 
 
 

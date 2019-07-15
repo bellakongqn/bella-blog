@@ -4,7 +4,7 @@ tags:
     - Redux
 categories: React
 ---
-#### Redux 学习笔记
+#### Redux 学习笔记(一)
 ----------
 
 Redux 学习笔记1

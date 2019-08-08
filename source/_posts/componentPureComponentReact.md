@@ -13,6 +13,37 @@ categories: React
 
  对于引用类型的变量，例如复杂的javascript对象或者数组，来说，浅拷贝将仅仅检查它们的引用值是否相等。这意味着，对于引用类型的变量来说，如果我们只是更新了其中的一个元素，例如更新了数组中某一位置的值，那么更新前后的数组仍是相等的。
 
+ Component shouldComponentUpdate 来做性能优化
+
+ ```
+ class CounterButton extends React.Component {
+ constructor(props) {
+  super(props);
+  this.state = {count: 1};
+ }
+ 
+ shouldComponentUpdate(nextProps, nextState) {
+  if (this.props.color !== nextProps.color) {
+   return true;
+  }
+  if (this.state.count !== nextState.count) {
+   return true;
+  }
+  return false;
+ }
+ 
+ render() {
+  return (
+   <button
+    color={this.props.color}
+    onClick={() => this.setState(state => ({count: state.count + 1}))}>
+    Count: {this.state.count}
+   </button>
+  );
+ }
+}
+ ```
+
  使用PureComponent提升性能
 
  如下显示的是一个IndexPage组件，设置了一个state是isShow，通过一个按钮点击可以改变它的值
@@ -88,6 +119,11 @@ class IndexPage extends Component {
         arr // pureComponent下不会重新render 
         // arr: [...arr, '2']
       })
+
+      // 通过传入之前的state来改变
+      // this.setState(prevState => ({
+       // arr: [...prevState.arr, 'bella'],
+      // }));
       console.log(this.state.arr)
     };
     render() {
@@ -171,7 +207,9 @@ class Example extends Component {
 
 5. 父组件继承Component，子组件继承Component时：初始化是会输出constructor，IndexPage render，example render，当我们第一次点击按钮以后，界面发生变化，后面就不再改变，因为我们一直把它设置为sxt2，但是每点击一次都会输出IndexPage render，example render，因为每次不管父组件还是子组件都会渲染
 
-6. 如果state和prop一直变化的话，还是建议使用Component，进行浅比较也是需要时间。并且PureComponent的最好作为展示组件
+6. 如果state和prop一直变化的话，还是建议使用Component，进行浅比较也是需要时间。并且PureComponent的最好作为展示组件,
+
+！！！！它既没有子组件，也没有依赖应用的全局状态。
 
 7. 继承自Component的组件，若是shouldComponentUpdate返回false，就不会渲染了，
 继承自PureComponent的组件不用我们手动去判断prop和state，所以在PureComponent中使用shouldComponentUpdate会有如下警告:
@@ -180,6 +218,8 @@ IndexPage has a method called shouldComponentUpdate(). shouldComponentUpdate sho
 参考博客：
 [https://www.jianshu.com/p/b7733dc8f826](https://www.jianshu.com/p/b7733dc8f826)
 [https://www.jianshu.com/p/690444f9f2dc](https://www.jianshu.com/p/690444f9f2dc)
+[https://www.jb51.net/article/143497.htm](https://www.jb51.net/article/143497.htm)
+[https://habr.com/en/company/redmadrobot/blog/318222/](https://habr.com/en/company/redmadrobot/blog/318222/)
 
 
 

@@ -7,6 +7,8 @@ categories: React
 
 Refs 是一个 获取 DOM节点或 React元素实例的工具。在 React 中 Refs 提供了一种方式，允许用户访问DOM 节点或者在render方法中创建的React元素。
 
+<!-- more -->
+
 当ref属性用于普通 HTML 元素
 1. 用法1---字符串
 ```
@@ -58,7 +60,7 @@ constructor() {
     当ref属性用于普通 HTML 元素时，构造函数中使用 React.createRef() 创建的 ref 接收底层 DOM 元素作为其 current 属性。
     当ref属性用于自定义 class 组件时，ref 对象接收组件的挂载实例作为其 current 属性。
 
-🥚：不能在函数组件上使用 ref 属性，因为他们没有实例。(可以使用React Hooks 使用ref,后期更新)
+🥚：不能在函数组件上使用 ref 属性，因为他们没有实例。(但在函数式组件内部可以使用React Hooks 使用ref,后期更新)
 
 ----------------------
 

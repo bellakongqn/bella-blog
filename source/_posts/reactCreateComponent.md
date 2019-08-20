@@ -64,7 +64,102 @@ export default FunctionC;
 
 🐅:无状态组件被鼓励在大型项目中尽可能以简单的写法来分割原本庞大的组件，未来React也会这种面向无状态组件在譬如无意义的检查和内存分配领域进行一系列优化，所以只要有可能，尽量使用无状态组件。
 
-React.createClass是react刚开始推荐的创建组件的方式，这是ES5的原生的JavaScript来实现的React组件，其形式如下：
+React.createClass是react刚开始推荐的创建组件的方式，目前不被推荐，不再赘述
+
+React.Component是以ES6的形式来创建react的组件的，是React目前极为推荐的创建有状态组件的方式,React.Component形式如下:
+```
+import React, { Component } from 'react';
+
+export default class Es6 extends Component {
+
+    constructor(props) {
+        super(props);
+        // 设置 initial state
+        this.state = {
+            text: props.initialValue || 'placeholder'
+        };
+    }
+    handleChange = (event) => {
+        this.setState({
+            text: event.target.value
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                Type something:
+                <input onChange={this.handleChange}
+               value={this.state.text} />
+            </div>
+        );
+    }
+}
+
+```
+
+引用：
+```
+  <Es6  initialValue={'ejwrg'}/>
+```
+
+React.Component创建的组件，其成员函数不会自动绑定this，需要开发者手动绑定，否则this不能获取当前组件实例对象。
+绑定this的四种方法:
+1. 构造函数中绑定
+```
+// 调用
+<input onChange={this.handleChange}
+               value={this.state.text} />
+
+// 绑定
+constructor(props) {
+   super(props);
+   this.handleClick = this.handleClick.bind(this); 
+}
+
+// 定义
+handleClick(){
+    // ...
+}
+```
+
+2. 使用bind来绑定
+```
+// 调用
+<div onClick={this.handleClick.bind(this)}></div> 
+
+// 定义
+handleClick(){
+    // ...
+}
+```
+
+3. 使用箭头函数绑定
+```
+// 调用绑定
+<div onClick={()=>this.handleClick()}></div> 
+
+// 定义
+handleClick(){
+    // ...
+}
+```
+
+4. 箭头函数定义
+
+```
+// 调用绑定
+<div onClick={his.handleClick}></div> 
+
+// 定义
+handleClick =() =>{
+    // ...
+}
+```
+
+组件定义方式
+1、只要有可能，尽量使用无状态组件创建形式。
+2、否则（如需要state、生命周期方法等），使用`React.Component`这种es6形式创建组件
 
 参考博客:
 [https://www.cnblogs.com/soyxiaobi/p/9573767.html](https://www.cnblogs.com/soyxiaobi/p/9573767.html)

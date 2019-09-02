@@ -79,6 +79,11 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
     }
    };
 
+4.plugins 任何loaders无法做的都可以通过plugins
+用于bundle文件的优化，资源管理和环境变量注入，作用于整个构建过程
+
+5.mode 用来指定当前的构建环境
+
 
 
 

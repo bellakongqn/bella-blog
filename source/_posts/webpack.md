@@ -132,7 +132,17 @@ css压缩const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 new OptimizeCssAssetsWebpackPlugin({
   assetNameRegExp: /\.css$/g,
   cssProcessor: require('cssnano')
-}),
+})
+
+8.打包前清理源目录文件 clean-webpack-plugin
+每次打包，都会生成项目的静态资源，随着某些文件的增删，我们的 dist 目录下可能产生一些不再使用的静态资源，webpack并不会自动判断哪些是需要的资源，为了不让这些旧文件也部署到生产环境上占用空间，所以在 webpack 打包前最好能清理 dist 目录
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// webpack4.0以上需要这么引用 不然会报错 CleanWebpackPlugin is not a constructor 
+  module.exports = {
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+    ]
+};
 
 
 🐖：

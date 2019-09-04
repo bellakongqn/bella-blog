@@ -84,7 +84,28 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
 
 5.mode 用来指定当前的构建环境
 
-6.文件指纹
+6.文件指纹 主要用于做版本管
+文件指纹就是文件打包输出文件名的后缀 Hash，Chunkhash，Contenthash
+Hash:和整个项目的构建有关，只要项目文件有修改，整个项目的Hash就会更改
+ChunkHash:和webpack打包的chunk有关，不同的entry会生成不同的chunkHash
+ContentHash:根据文件内容来定义hash,文件内容不变，则contentHash不变
+
+js指纹设置采用chunkHash 设置output的filename   filename: '[name]_[chunkHash:8].js'
+
+css指纹设置采用contentHash 设置MiniCssExtractPlugin的 filename 
+new MiniCssExtractPlugin({
+            filename:'[name]_[contentHash:8].css'
+}),
+{test:/.css$/, use:[MiniCssExtractPlugin.loader, 'css-loader']},
+
+图片指纹设置采用hash 设置file-loader的name
+ {test:/.(png|jpg|svg|gif)$/, use:[
+                {loader:'file-loader',
+                 options:{
+                     name:'[name]_[hash:8].[ext]'
+                 }}
+  ]}
+
 
 7.代码压缩
 js压缩const uglify = require('uglifyjs-webpack-plugin');

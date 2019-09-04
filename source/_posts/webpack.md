@@ -144,6 +144,70 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
     ]
 };
 
+9.postCss插件autoprefixer自动补齐css前缀 npm i postcss-loader autoprefixer -D
+postcss-loader 执行顺序必须保证在 css-loader 之前，建议还是放在 less或者 sass 等预处理器之后更好。即 loader 顺序：
+less-loader -> postcss-loader -> css-loader -> style-loader 或者 MiniCssExtractPlugin.loader。其实 postcss-loader 放在 less-loader 之前问题也不大，平时使用的 less 里面的语法基本不会和 autoprefixer 处理产生冲突的
+{
+  test: /.less$/,
+  use: [
+      MiniCssExtractPlugin.loader,
+      'css-loader',
+      'less-loader',
+      {
+          loader: 'postcss-loader',
+          options: {
+              plugins: () => [
+                  require('autoprefixer') ({
+                      overrideBrowserslist: ['last 2 version', '>1%', 'ios 7']   // last 2 version为兼容浏览器最后两个版本。
+                  })
+              ]
+          }
+      }
+  ]
+}
+
+10.移动端css px自动转换成rem rem: font-size of the root element  
+rem是相对单位 px是绝对单位
+安装lib-flexible(动态计算根元素数值），px2rem-loader（转换为rem)
+{
+    loader:'px2rem-loader',
+    options:{
+        remUnit: 75,
+        // x2rem-loader 的 remUnit 选项意思是 1rem=多少像素，
+        // 结合 lib-flexible 的方案，我们将 px2remLoader 的 options.remUnit 
+        // 设置成设计稿宽度的 1/10，这里我们假设设计稿宽为 750px
+        remPrecesion:8
+        // px-rem小数点后面的位数
+    }
+}
+引入lib-flexible计算根元素
+
+之前处理方式 ：css媒体查询实现响应式布局
+@media screen and (max-width: 700px) {
+    body {
+        background-color:lightblue;
+    }
+}
+
+11.资源内联
+代码层面：页面框架初始化脚本；上报相关打点；css内联避免页面闪动（rem需要页面一加载就开始计算）
+请求层面 减少HTTP网络请求数（小图片或者字体内联）（url-loader limit)
+raw-loader@0.5.1
+在文件内引入所需资源
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    ${require("raw-loader!./meta.html")}
+    <title>Document</title>
+    <script>${require("raw-loader!babel-loader!../node_modules/lib-flexible/flexible.js")}</script>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+
 
 🐖：
 npm install moduleName 命令

@@ -84,7 +84,34 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
 
 5.mode 用来指定当前的构建环境
 
+6.文件指纹
 
+7.代码压缩
+js压缩const uglify = require('uglifyjs-webpack-plugin');
+webpack内置uglifyjs-webpack-plugin来压缩js文件
+
+html压缩const HtmlWebpackPlugin = require('html-webpack-plugin')
+new HtmlWebpackPlugin({
+    template:path.join(__dirname,'src/search.html'),  // 模板地址
+    filename:'search.html',  //文件名
+    chunks:['search'],  引入的js
+    inject:true,  //将js文件插入body的底部 "body" == true "head"：表示将js文件插入在head标签内 false 不插入。
+    // minify的作用是对生成的html文件进行压缩，其值是一个object或者false。默认是false，表示不对html文件进行压缩。如果赋值为object，用于对压缩方式进行配置
+    minify:{
+        html5:true,
+        collapseWhitespace:true,
+        preserveLineBreaks:false,
+        minifyCSS:true,
+        minifyJS:true,
+        removeComments:true,
+    }
+})
+
+css压缩const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+new OptimizeCssAssetsWebpackPlugin({
+  assetNameRegExp: /\.css$/g,
+  cssProcessor: require('cssnano')
+}),
 
 
 🐖：

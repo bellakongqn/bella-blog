@@ -206,6 +206,78 @@ raw-loader@0.5.1
 </body>
 </html>
 
+12.treeShaking
+概念：一个模块可能有多个方法，只要其中的某个方法使用到了，则整个文件都会被打包到bundle里面去，treeShaking 就是只把用到的方法打入bundle,没有的方法会在uglify阶段被擦除掉
+
+webpack mode:production默认开始treeShaking
+
+要求必须是Es6的语法，即通过import  export引用导出
+
+DCE（Dead Code Elimination)
+-代码不会被执行，不可到达
+-代码执行的结果不会被用到
+代码只会影响死变量（只写不读）
+
+13.多页面打包构建
+多页面应用概念：
+每一次页面跳转的时候，后台服务器会返回一个新的html文档，这种类型的网站也就是多页网站，也叫做多页应用
+
+多页面打包基本思路：
+每个页面对应一个entry,一个html-webpack-plugin
+缺点：每次新增或者删除页面需修改webpack配置
+
+多页面打包通用方案
+动态获取entry和设置html-webpack-plugin数量
+
+利用glob.sync
+const entryFiles = glob.sync(path.join(__dirname,'./src/*/index.js'))
+
+const setMPA = () => {
+
+    const entry = {};
+    const htmlWebpackPlugins =[];
+
+    const entryFiles = glob.sync(path.join(__dirname,'./src/*/index.js'))
+
+    
+
+    Object.keys(entryFiles).map(( index ) => {
+        const entryFile = entryFiles[index]
+        // D:/My/webpack-pro/src/index/index.js
+        // D:/My/webpack-pro/src/search/index.js
+        const match = entryFile.match(/src\/(.*)\/index\.js/)
+        const pageName = match && match[1]
+        // index
+        // search
+        entry[pageName] = entryFile
+
+        htmlWebpackPlugins.push(
+            new HtmlWebpackPlugin({
+                template:path.join(__dirname,`src/${pageName}/index.html`),
+                filename:`${pageName}.html`,
+                chunks:[pageName],
+                inject:true,
+                minify:{
+                    html5:true,
+                    collapseWhitespace:true,
+                    preserveLineBreaks:false,
+                    minifyCSS:true,
+                    minifyJS:true,
+                    removeComments:true,
+                }
+            }),
+        )
+        
+    })
+
+    return {
+        entry,
+        htmlWebpackPlugins
+    }
+
+}
+
+
 
 
 

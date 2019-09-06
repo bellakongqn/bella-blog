@@ -277,6 +277,30 @@ const setMPA = () => {
 
 }
 
+14.devtool source-map
+使用source-map 定位到源代码 便于开发中debugger
+关键字：
+eval:使用eval包裹模块代码
+source-map:产生.map文件
+cheap:不包含列信息
+inline:将.map文件作为DataURL嵌入，不单独生成.map文件
+module:包含loader的sourcemap
+
+15.scopeHoisting
+现象：构建后代码存在大量闭包代码
+会导致大量函数闭包包裹代码，导致体积增大（模块越多越明显）
+运行代码时创建的函数作用域变多，内存开销变大
+模块转换时 被webpack转换后的代码会带上一层包裹
+import 会被转换成_webpack_require
+
+scopeHoisting原理：
+将所有模块代码按照引用顺序放在一个函数作用域里，然后适当的重命名一些变量以繁殖变量名冲突
+
+通过scopeHoisting可以减少函数声明代码和内存开销
+
+production下自动开启
+
+
 
 
 

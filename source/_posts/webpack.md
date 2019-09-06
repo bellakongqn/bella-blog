@@ -300,6 +300,57 @@ scopeHoisting原理：
 
 production下自动开启
 
+16.提取公共资源
+-html-webpack-externals-plugin
+new HtmlWebpackExternalsPlugin({
+    externals: [
+        {
+            module: 'react',
+            entry: 'https://unpkg.com/react@16.9.0/umd/react.production.min.js',
+            global: 'React',
+        },
+        {
+            module: 'react-dom',
+            entry: 'https://unpkg.com/react-dom@16.9.0/umd/react-dom.production.min.js',
+            global: 'ReactDOM',
+        }
+    ]
+})
+
+页面内引入cdn资源
+<script crossorigin src="https://unpkg.com/react@16.9.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.production.min.js"></script>
+
+-webpack4 内置SplitChunksPlugin
+optimization:{
+splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /(react|react-dom)/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+}
+在html-webpack-plugin里引入提取的公共资源 chunks:['vendors','common',pageName],
+
+提取自定义公共
+optimization:{
+splitChunks:{
+            minSize:0,
+            // 文件大小
+            cacheGroups:{
+                commons:{
+                    name:'common',
+                    chunks:'all',
+                    minChunks:4,
+                    // 至少引用几次
+                }
+            }
+        }
+}
+
 
 
 

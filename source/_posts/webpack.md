@@ -6,7 +6,7 @@ categories: webPack
 ---
 
 webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。
-
+<!-- more -->
 创建一个webpack配置
 
 1.首先创建一个文件夹 （webpack-pro）
@@ -335,7 +335,7 @@ splitChunks: {
 }
 在html-webpack-plugin里引入提取的公共资源 chunks:['vendors','common',pageName],
 
-提取自定义公共
+提取自定义公共文件
 optimization:{
 splitChunks:{
             minSize:0,
@@ -350,6 +350,25 @@ splitChunks:{
             }
         }
 }
+
+17.代码分割import
+代码分割的意义:
+对于大的web应用来讲,将所有文件都放在一个文件中显然是不够有效的,特别是当某些代码只要在特殊的时候才会用到,webpack用一个功能就是将你的代码库分割成chunks,当代码运行到他们的时候再进行加载
+
+适用的场景:
+抽离相同代码到一个共享块
+脚本懒加载,使得初下载的代码更小
+
+18.webpack与eslint 
+定制自己的eslint 规则
+
+19.webpack 打包组件+基础库
+
+20.webpack ssr
+样式 设置占位符
+数据
+
+21.webpack之优化构建时命令行的显示日志（stats、friendly-errors-webpack-plugin）
 
 
 
@@ -370,7 +389,7 @@ npm install -g moduleName 命令
 npm install -save moduleName 命令
 1. 安装模块到项目node_modules目录下。
 2. 会将模块依赖写入dependencies 节点。
-3. 运行 npm install 初始化项目时，会将模块下载到项目目录下。
+3. 运行 npm install 初始化项目时，会将模块下载到项  目目录下。
 4. 运行npm install --production或者注明NODE_ENV变量值为production时，会自动下载模块到node_modules目录中。
 
 npm install -save-dev moduleName 命令

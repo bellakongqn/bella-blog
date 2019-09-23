@@ -7,7 +7,7 @@ thumbnail: '../assets/post-img/css.jpg'
 ---
 
 ### import 与 import {} 区别
-
+<!-- more -->
 import 与 import {} 区别
 // export default A.js
 export default A.js

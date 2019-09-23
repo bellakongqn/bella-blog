@@ -10,7 +10,7 @@ thumbnail: '../assets/post-img/css.jpg'
 
 Context Api 应用场景
 为了共享那些对于一个组件树而言是“全局”的数据，例如当前认证的用户、主题或首选语言。使用 context, 我们可以避免通过中间元素传递 props。
-
+<!-- more -->
 举例：主题颜色，通过按钮切换来控制主题颜色 
 效果图：
 ![](/assets/post-img/change1.png)

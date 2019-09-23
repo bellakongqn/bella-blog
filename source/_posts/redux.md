@@ -8,6 +8,7 @@ categories: React
 同步
 1.创建store
   Provider 传入整个store,相当于未整个组件创建一个context,在组件内部引入context,即后面提到的connect
+  <!-- more -->
 2.拆分reducers
   设置函数功能比如（增加一条备忘录，修改备忘录状态）
 3.引入拆分actions

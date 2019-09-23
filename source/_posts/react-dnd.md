@@ -11,6 +11,8 @@ thumbnail: '../assets/post-img/react-dnd.png'
   3. 可以放置
   4. 优化 从外部进行传值(待更新)
 - 搭建出简单页面 如图
+
+<!-- more -->
 ![](/assets/post-img/build.png)
 代码实现如下js:
 ```

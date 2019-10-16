@@ -10,6 +10,8 @@ categories: ajax
 -----
 Jsonp(JSON with Padding) 是 json 的一种"使用模式"，可以跨域读取数据。
 
+<!-- more -->
+
   直接使用ajax是无法请求非同源站点的json、xml之类，但是可以加载js，使用dataType:"script"将json当做js加载，但是浏览器
 拿到这个json它会当做js，所以虽然可以加载成功，但是我们也拿不到这个json。所以可以将json封装成一个fun(json)，然后在本地写一个function fun(data)，浏览器就会将请求的fun(json)当做本地的fun函数来调用。最后要使用jsonp的形式，必须服务端支持jsonp，上面的json{"id":1}，是服务端拼装成的fun({"id":1});
 

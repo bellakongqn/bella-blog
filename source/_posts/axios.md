@@ -10,6 +10,8 @@ categories: ajax
 使用XHR对象可以与服务器交互.可以直接从URL获取数据,无需让整个页面刷新,它允许网页在不影响用户操作的情况下更新页面的局部内容.XMLHttpRequest 可以用于获取任何类型的数据
 EventTarget<--XMLHttpRequestEventTarget<--XMLHttpRequest
 
+<!-- more -->
+
 1.创建一个XHR对象，也叫实例化一个XHR对象，因为XMLHTTPRequest()是一个构造函数。下面是创建XHR对象的兼容写法
 
 ```

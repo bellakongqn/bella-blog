@@ -58,4 +58,21 @@ categories: js
      }
   }
 ```
-### 有效的括号
+### 有效的括号[{([)}]=>false ()=>true 栈(后进先出) push() pop() peek()
+1.先将括号之间的管理用对象存储 target['('] = ')'
+2.循环字符串
+3.初始化一个空数组a
+  a为空:将字符串数组的元素存入a,跳出本次循环 a['(']
+  a不为空:判断字符串数组中的本次值,是否于上一个值对应 s[i] === target[sta[sta.length - 1]
+    相等:去除a的最后一项 a.pop()
+    不想等:将本次值存入a a['(','{']
+ 
+### 合并两个有序链表 1->2->4, 1->3->4 ==> 1->1->2->3->4->4
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+*/
+ 定义:链表的值指向

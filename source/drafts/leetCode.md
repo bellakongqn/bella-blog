@@ -5,7 +5,7 @@ tags:
 categories: js
 ---
 
-### 反转整数
+### 反转整数 123->321  -123->-321 10.21
 利用数组反转的特性 reverse()
 1.将整数转化为数组 
   arr= x.toString().split('') 
@@ -21,3 +21,41 @@ categories: js
   负值: - (1 << 30) * 2  正值:(1 << 30) * 2 - 1
   超出范围则返回0
   未超出范围则判断原值正负 x>0 ans x<0 -ans
+
+### 判断一个数是否为回文数 101=101 √  201≠102 × 10.22
+1.数字->字符串 a.toString()
+2.数字->字符串->数组->反转->字符串 a.toString().split('').reverse().join("")
+3.判断两个字符串是否相等
+
+### 罗马数字转整数 IVVVV=19=(5-1)+5+5+5=19
+1.避免使用switch来判断赋值，首先使用一个对象将罗马数字对应的值存储起来 hash['I']=1;
+2.对罗马数字进行遍历（一般情况下大数在前，小数在后，当小数在前大数在后时，需要用大数减去小数）：
+  首先判断当前是不是为最后一个数字
+  是：后一个数则为0
+  否：判断后一个数是否大于前一个数
+     是：用大数减去小数，计算出当下数组的和，🐖：并循环+1  sum+=nextItem-item; i++;
+     否：加上当下的数字；循环不用+1 sum+=item;
+
+### 最长公共前缀 ["flower","flow","flight"]->"fl"
+1.首先判断数组是否为空 如果为空 则最长公共前缀为"",不为空再进行下列操作
+2.找出字符串数组中的最短字符串长度 采用数组的reduce方法
+  var minLen = strs.reduce(function( pre , item ){
+    return Math.min(pre, item.length)
+  },Number.MAX_VALUE)
+  pre->前一个返回值或者初始值
+  Number.MAX_VALUE->表示js中的最大数，这里表示初始值，用来取第一个字符串长度
+3.遍历字符串数组，取第一个字符串的第一个字符，判断是否每一个字符串第一个字符均为它，采用数组的every()方法
+```
+  for(var i=0;i<minLen;i++){
+     var s=strs[0][i]
+     var f = strs.every(function(item){
+        return item[i]===s;
+     })
+     if(f){
+          ans+=s;
+     }else{
+          break;
+     }
+  }
+```
+### 有效的括号

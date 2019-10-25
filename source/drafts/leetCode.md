@@ -148,7 +148,68 @@ categories: js
 4.sum为2 则add=1;否则add=0
 5.将数组c反转并转换为字符串输出
 
+### x的平方根 其中 x 是非负整数。 由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。8-》2 1-》1 10.25
+1.循环0-x允许等于x,因为存在1&0两种特殊情况
+2.判断i*i与 i*i<x&&(i+1)*(i+1)>x的情况，返回i
 
+1.Math.sqrt(x) 平方根函数，然后取整Math.floor(),向下取整，舍弃小数
+2.Math.ceil() 向上取整，存在小数+1，Math.round() 四舍五入
+
+### 爬楼梯 需要 n 阶你才能到达楼顶。 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢
+动态规划 https://blog.csdn.net/bajin7353/article/details/81836987
+1.到达第i阶有多少种爬法，只与第i-1、第i-2阶的爬法数量直接相关，到达第i阶的方式数量 = 到达第i-1阶的方式数量+到达第i-2阶的方式数量
+2.a[0]=1,a[1]=1 a[2]=a[0]+a[2]=2以此类推
+
+### 删除排序链表中的重复元素
+1.将链表中的元素存入数组
+2.数组去重，然后连接为链表
+❌：数组去重，不可以Set结构去重，只能循环去重,从末尾开始 i && a[i].val === a[i - 1].val 删除当前项 i是为了保留首项
+🐖：判断数组是否为null
+
+### 合并两个有序数组 双指针
+1.合并为一个，然后排序
+
+### 相同的树 给定两个二叉树，编写一个函数来检验它们是否相同 递归算法
+1.判断当前结点是否为空
+2.判断当前结点是否相等，以及左右叶子结点是否相等
+```
+var isSameTree = function(p, q) {
+    if (p === null && q === null) return true;
+    if (p === null && q !== null) return false;
+    if (p !== null && q === null) return false;
+    return (p.val === q.val) && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+};
+```
+
+### 对称二叉树 检查它是否是镜像对称的。
+1.判断根结点是否空 空返回true
+2.不为空的时候 定义一个方法，判断左右叶子结点是否为对称结点
+3.判断左右叶子结点值是否相等 不相等返回false 否则判断左右叶子结点的叶子结点是否对称 左对右
+Symmetric(p.left, q.right) && Symmetric(p.right, q.left);
+
+### 二叉树的最大深度 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+1.定义一个数代表深度
+2.设计一个函数，来遍历计算深度，接受初始根节点，及深度作为参数
+```
+var maxn;
+function dfs(root, depth) {
+  if (!root) {
+    maxn = Math.max(maxn, depth);
+    return;
+  }
+
+  dfs(root.left, depth + 1);
+  dfs(root.right, depth + 1);
+}
+var maxDepth = function(root) {
+  maxn = -1;
+  dfs(root, 0);
+  return maxn;
+};
+```
+### 二叉树的层次遍历||
+
+ 
   
 
   

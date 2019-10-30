@@ -225,6 +225,106 @@ var maxDepth = function(root) {
 2.找到数组中间结点,作为根结点,中间结点左侧为左子树,右侧为右子树,然后继续取中间结点
 3.🐖:判断结束标识,是否结点为null,取整Math.round((0+5)/2)=3
 
+### 平衡二叉树  判断它是否是高度平衡的二叉树????。10.30
+
+### 二叉树的最小深度
+```
+var minDepth = function(root) {
+    if(root == null) {
+        return 0;
+    }
+    if(root.left == null && root.right == null) {
+        return 1;
+    }
+    let ans = Number.MAX_SAFE_INTEGER;
+    if(root.left != null) {
+        ans = Math.min(minDepth(root.left), ans);
+    }
+    if(root.right != null) {
+        ans = Math.min(minDepth(root.right), ans);
+    }
+    return ans + 1;
+};
+```
+### 路径总和 给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+```
+var hasPathSum = function(root, sum) {
+    if(root==null) return false
+    var t = sum-root.val
+    if(root.left===null&&root.right===null){
+        return t==0?true:false
+    }
+    return hasPathSum(root.left,t)||hasPathSum(root.right,t)
+};
+```
+
+### 杨辉三角 杨辉三角||
+```
+var generate = function(numRows) {
+    var ans = [];
+    // i<rowIndex+1
+    for (var i = 0; i < numRows; i++) {
+        if (i === 0) {
+          ans[i] = [1];
+          continue;
+        }
+    
+        ans[i] = [];
+        for (var j = 0; j <= i; j++)
+          if (j === 0)
+            ans[i][j] = ans[i - 1][j];
+          else if (j === i)
+            ans[i][j] = ans[i - 1][j - 1];
+          else 
+            ans[i][j] = ans[i - 1][j - 1] + ans[i - 1][j];
+        }
+    
+  // return ans[rowIndex]
+  return ans;
+};
+```
+### 买卖股票的最佳时机 一次交易
+1.设置最小值等于数组第一个,最大利润为0
+2.循环数组,判断数组两项直接最大的差值
+```
+var maxProfit = function(prices) {
+   if(prices.length==0)return 0;
+   var max=0,min=prices[0];
+    for(var i=1;i<prices.length;i++){
+        var min = Math.min(min,prices[i])
+        var max = Math.max(max,prices[i]-min)
+    }
+    return max
+};
+```
+### 买卖股票的最佳时机|| 多次交易
+1.贪心算法，总是做出在当前看来是最好的选择，不从整体最优上加以考虑，也就是说，只关心当前最优解
+我们要算的是利润，要有利润，自然要有一次交易。
+所以我们就说说prices[1]，即是第一天股票价格。按照贪心策略，不关心以后，我们只关心当前利益。第0天买入，花费prices[0]，第一天卖出，得到prices[1]，那么我们的收获就是profit = prices[1] - prices[0],那么有两种情况
+（1）当profit > 0 时，赶紧买入卖出，能赚一笔是一笔，苍蝇再小也是肉嘛
+（2）当profit <= 0 时，再买入卖出的话，那就是傻了，白费力气不说，还亏钱
+```
+var maxProfit = function(prices) {
+    var maxPro = 0, tmp = 0;
+        for (var i = 1; i < prices.length; i++) {
+            tmp = prices[i] - prices[i-1];
+            if (tmp > 0)
+                maxPro += tmp;
+        }
+        return maxPro;
+};
+```
+
+### 回文字符串 "A man, a plan, a canal: Panama" replace() 正则去除符号
+```
+var isPalindrome = function(s) {
+    s = s.replace(/[\W]/g, '');
+    s = s.toLowerCase();
+    var _s = s.split('').reverse().join('');
+    return s === _s;
+};
+```
+
 
  
   

@@ -347,7 +347,77 @@ var maxArea = function(height) {
 };
 ```
 ### 只出现一次的数字 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+1.位运算
+```
+var singleNumber = function(nums) {
+    var ans = 0
+    for(var i=0;i<nums.length;i++){
+        ans^=nums[i]
+    }
+    return ans
+};
+```
+### 环形链表 给定一个链表，判断链表中是否有环 11.4
+1.p1每次走一步，p2每次走两步。
+2.若没有环，则两者不会碰到，若有环，则必然会碰到。
+```
+var hasCycle = function(head) {
+     let slow = head, fast = head
+     while(fast && fast.next){
+          slow = slow.next
+          fast = fast.next.next
+          if(slow === fast) return true
+     }
+    return false
+}
+```
+### 最小栈 设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
+1.js中可以用数组实现栈，定义两个数组，一个正常进行push和pop的操作，另一个保存当前栈中的最小值
+2.保存当前栈的最小值是为了避免最小值被删除（依次存放多个最小值）
+```
+var MinStack = function() {
+    this.stack = [];
+    this.min = [];
+};
 
+MinStack.prototype.push = function(x) {
+    this.stack.push(x);
+    //判断x和min当前栈顶的数哪个小，如果x小则把x推入min的栈顶
+    if(this.min.length==0 || this.min[this.min.length-1]>=x){
+        this.min.push(x);
+    }
+};
+
+/**
+ * @return {void}
+ */
+MinStack.prototype.pop = function() {
+    //this.stack.pop();
+    //判断stack中即将弹出的元素和min栈顶的元素是否相等，若相等，则要把min栈顶的元素弹出，防止找不到最小值
+    if(this.stack[this.stack.length-1]==this.min[this.min.length-1]){
+        this.min.pop();
+    }
+    this.stack.pop();
+};
+
+/**
+ * @return {number}
+ */
+MinStack.prototype.top = function() {
+    return this.stack[this.stack.length-1];
+};
+
+/**
+ * @return {number}
+ */
+MinStack.prototype.getMin = function() {
+    return this.min[this.min.length-1];//min栈顶保存当前栈中的最小值
+};
+
+```
+### 相交链表
+
+ 
  
   
 

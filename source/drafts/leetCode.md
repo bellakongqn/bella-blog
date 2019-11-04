@@ -324,7 +324,29 @@ var isPalindrome = function(s) {
     return s === _s;
 };
 ```
-
+### 盛水最多的容器 10.31 给定 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+1.双指针法 面积=长*宽，先取最大宽度，那么接下来想得到更大的面积，就是找到一个相对好的长度
+2.默认取首尾距离最远，也就是宽度最大的两个高度，作为第一个最大面积，两个指针分别指向两个高度，得到这个面积后，移动较小的指针，需求一个更大的高度，让面积可能变大
+```
+var maxArea = function(height) {
+    var maxAera =0 
+    if(height.length<=1) {
+        return 0
+    }
+    var left =0,right=height.length-1
+    while(left<right){
+        if(height[left]<=height[right]){
+            maxAera = Math.max(maxAera, height[left]*(right-left))
+            left++
+        }else{
+            maxAera = Math.max(maxAera, height[right]*(right-left))
+            right--
+        }
+    }
+    return maxAera
+};
+```
+### 只出现一次的数字 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
 
  
   

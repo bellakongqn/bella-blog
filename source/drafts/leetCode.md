@@ -415,9 +415,94 @@ MinStack.prototype.getMin = function() {
 };
 
 ```
-### 相交链表
-
- 
+### 相交链表 编写一个程序，找到两个单链表相交的起始节点。 11.5
+1.先算出两条链表的长度 countA，count B，
+2.然后算出差值，让长的链表先走这个差值，保证剩下的节点数与另一条一样多。
+3.之后就同时走俩指针，有相等的就是交点，没有就返回null
+```
+var getIntersectionNode = function(headA, headB) {
+    let p = headA,
+      q = headB;
+  if (!p || !q) return null;
+  if (p === q) return p;
+  let countA = 0, countB = 0;
+  while (p !== null) {
+    countA ++
+    p = p.next
+  }
+  while (q !== null) {
+    countB ++
+    q = q.next
+  }
+  p = headA;
+  q = headB;
+    if(countA>countB){
+         for (let i = countB; i < countA; i++) p = p.next;
+    }else if (countA < countB) {
+         for (let i = countA; i < countB; i++) q = q.next;
+     }
+  while (p && q) {
+    if (p === q) return p
+    p = p.next;
+    q = q.next;
+  }
+  
+  return null;
+};
+```
+### 两数之和|| 给定一个已按照升序排列 的有序数组，找到两个数使得它们相加之和等于目标数。下标从1开始
+1.直接两次循环查看，复杂度n*n
+2.利用有序数组这一个特点，判断首尾相加是否等于目标值，然后根据判断移动指针
+🐖：while判断
+```
+var twoSum = function(numbers, target) {
+    var l=0;
+    var r=numbers.length-1
+    while(l<r){
+        if(numbers[l]+numbers[r]==target){
+                return[l+1,r+1]
+        }else if(numbers[l]+numbers[r]<target){
+           l+=1;
+        }else{
+           r-=1;
+        }
+    }
+   
+};
+```
+### Excel表列名称 给定一个正整数，返回它在 Excel 表中相对应的列名称。
+1.十进制转26进制
+```
+var convertToTitle = function(n) {
+    const arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+  let val = ''
+  while(n>0){
+      if(n%26===0){
+           val = 'Z'+val
+           n = parseInt(n / 26) - 1
+      }else{
+          val = arr[n % 26 - 1] + val
+           n = parseInt(n / 26)
+      }
+      
+  }
+  return val
+};
+```
+### Excel 表列序号 给定一个Excel表格中的列名称，返回其相应的列序号。
+1.26进制转10进制
+```
+var titleToNumber = function(s) {
+     const arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+  let len = s.length, sum = 0
+  for (let i = 0; i < len; i++) {
+    sum = (arr.indexOf(s[i]) + 1) * Math.pow(26, len - 1 - i) + sum
+  }
+  return sum
+};
+```
+### 求众数 给定一个大小为 n 的数组，找到其中的众数。众数是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。
+  
  
   
 

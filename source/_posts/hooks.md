@@ -11,6 +11,7 @@ useEffect的使用
 3.每次渲染都有它自己的Effects
     并不是count的值在“不变”的effect中发生了改变，而是effect 函数本身在每一次渲染中都不相同。
 4.每一次渲染都有它自己的…所有
+<!-- more -->
 5.effects的清理
 ```
  useEffect(()=>{

@@ -16,7 +16,7 @@ categories: Vue
 3.路由设置
     vue-router 路由配置
     npm install vue-router
-
+<!-- more -->
 ------
 
 demo:
@@ -88,18 +88,108 @@ var router =  new VueRouter({
     routes
 })
 
-// 路由拦截 
-router.beforeEach((to, from, next) => {
-    let isLogin = false;
-    if (!isLogin && to.path !== '/login') {
-      next('/login');
-    } else {
-      next();
-    }
-})
-
 export default router;
 ```
+4.vuex +  vue router 设置路由权限
+  npm install vuex --save
+  [vuex.js](https://vuex.vuejs.org/installation.html)
+  - 登录前不可进行操作，导航操作到其它路由，需跳转到登录页
+  - 通过vuex 设置登录状态
+tip:只设置isLogin字段来判断，登录之后，直接修改当前路由为其它路由仍会被跳转到登录页
+解决办法：通过设置token，根据当前token有无来判断是否已经登录
+  - 创建store 来存储登录状态
+login.js
+  ```
+  const state ={
+    isLogin:false,
+    token: localStorage.getItem('token') || '',
+  }
+  const actions  = {
+        
+  }
+
+  const mutations = {
+    // 登录|登出
+    loginIn(state){
+        state.isLogin = true;
+        localStorage.setItem('token', '摸鱼ing')
+    },
+    loginOut(state){
+        state.isLogin = false;
+        localStorage.removeItem('token')
+    },
+    
+  }
+
+const getters = {
+    
+}
+
+export default {
+    namespaced: true,
+    state,
+    mutations,
+    actions,
+    getters
+  }
+```
+index.js
+```
+import Vue from 'vue'
+import Vuex from 'vuex'
+import login from './login'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  modules:{
+    login,
+  }
+})
+```
+  - 在main.js中引入store,同时设置路由权限
+```
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store/index'
+
+Vue.config.productionTip = false
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login') {
+    if (store.state.login.token === '') {
+      next({
+        path: '/login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+new Vue({
+  store,
+  router,
+  render: h => h(App),
+}).$mount('#app')
+
+```
+ -  登录页登录时触发登录事件
+```
+<Button text="登录" size="small" @click="loginIn"/>
+```
+```
+loginIn(){
+        this.$store.commit('login/loginIn')
+        // 登录完成之后的跳转
+        this.$router.push('/home')
+}
+```
+项目结构
+![](/assets/journal.png)
 
 
 

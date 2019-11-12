@@ -190,6 +190,78 @@ loginIn(){
 ```
 项目结构
 ![](/assets/journal.png)
+5.完善注册逻辑
+
+6.登录之后跳转页面进行页面导航（嵌套路由）
+```
+const routes = [
+    { path: '/', redirect: '/home' },
+    { path: "/login", component: login },
+    { path: '/register', component:register },
+    { path:"/home", component: home, 
+      redirect: '/index', 
+      // 登录之后的默认路由
+      meta: { name: '主页' },
+      children:[
+        { path:'/index', component:index },
+        { path:'/diary', component:diary }, // 日记
+        { path:'/memo', component:memo },   // 备忘录
+      ] },
+    { path:"/about", component: about, meta: { name: '关于'} },
+]
+```
+Home主页进行router-link router-view
+home.vue代码
+```
+<template>
+    <div>
+      <router-link to="/diary">Diary</router-link>
+      <router-link to="/memo">Memo</router-link>
+      <router-link to="/diary">Anniversary</router-link>
+      <router-link to="/memo">War</router-link>
+      <router-link to="/memo">Moive</router-link>
+            
+      <router-view></router-view>
+    </div>
+</template>
+```
+根据自己的设计进行页面样式的书写
+7.vuex 的使用 mapState mapMutations mapActions mapGetters
+使用这些简化从store中取数据的方法
+在computed中使用mapState，mapGetters来获取数据
+```
+computed:{
+        ...mapState({
+          // 从login模块里取showCard字段
+            showCard:state=>state.login.showCard
+        }),
+        ...mapGetters({
+          // 从count模块中取oddNumber
+          oddNumber:'count/oddNumber'
+          })
+},
+```
+在methods中使用mapMutations，mapActions来调用方法
+```
+methods:{
+        // 获取login模块的showCardDetail方法，将其映射为页面的showCardDetail方法
+        ...mapMutations({
+            showCardDetail:'login/showCardDetail',
+        }),
+        // 获取count模块的add方法，将其映射为页面的add方法
+        ...mapActions({
+          add:'count/add'
+        }),
+        loginOut(){
+            this.$store.commit('login/loginOut')
+            this.$router.push('/login')
+        },
+  }
+```
+当前页面
+![](/assets/preview.png)
+
+
 
 
 

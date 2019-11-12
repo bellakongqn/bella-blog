@@ -5,8 +5,10 @@ tags:
 categories: Vue
 ---
 
-### Vue项目
+### Vue项目 
 ------
+
+项目地址（https://github.com/bellakongqn/journal.git）
 
 1.vue-cli（vue脚手架快速搭建vue项目）
     npm install -g @vue/cli
@@ -191,6 +193,59 @@ loginIn(){
 项目结构
 ![](/assets/journal.png)
 5.完善注册逻辑
+ - 完善input组件,增加页面上提示
+ ```
+ <template>
+  <div class="inputContainer">
+      <p class="inputLabel">{{label}}</p>
+      <input class="input" 
+             :type="type"
+             autocomplete='off'
+             @change="$emit('input', $event.target.value)"
+            >
+      <p class="warningText" v-if="warning!==''">{{warning}}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Input",
+  
+  props: {
+    type:String,
+    label:String,
+    warning:String||'',
+  },
+  methods: {
+    handleOnChange($event) {
+      this.$emit('change', $event.target.value)
+    }
+  }
+};
+</script>
+<style lang="less" scoped>
+@import url('./Input.less');
+</style>
+ ```
+ 
+ - 页面注册逻辑书写
+ ```
+ toRegister(){
+            const  regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+            if(this.email===''|| !regEmail.test(this.email)){
+                this.errText = "邮箱格式不正确"
+            }else if(this.password===''||this.password.length<6){
+                this.errText = '请输入密码&密码至少6位'
+            }else if(this.password!==this.rePassword){
+                this.errText = '两次密码不一致,请确认'
+            }else{
+                this.$router.push('/login')
+            }
+
+  },
+ ```
+ 🐖：原生进行判断，未使用框架
+![](/assets/register.png)
 
 6.登录之后跳转页面进行页面导航（嵌套路由）
 ```

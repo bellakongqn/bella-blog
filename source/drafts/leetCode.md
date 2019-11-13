@@ -514,7 +514,75 @@ var trailingZeroes = function(n) {
     return count
 };
 ```
- 
+### 旋转数组 11.13
+1.循环pop()并且unshift()
+```
+var rotate = function(nums, k) {
+    let i = 0
+    while(i < k){
+        nums.unshift(nums.pop())
+        i++
+    }
+};
+```
+2.还可以splice()整个切下尾部的k个元素，使用...展开后再unshift()
+```
+var rotate = function(nums, k) {
+    let len = nums.length
+    return nums.unshift(...nums.splice(len-k,k))
+};
+```
+### 颠倒二进制位
+```
+var reverseBits = function(n) {
+    let str = n.toString(2);
+    let b = 0 ;let len = str.length;
+    while(len<32){
+        str = '0'+str;
+        len++
+    }
+     b = parseInt(str.split('').reverse().join(''),2);
+    return b
+};
+```
+### 位1的个数
+1.filter
+```
+var hammingWeight = function(n) {
+   let l = n.toString(2).split('').filter(a => a==1)
+   return l.length
+};
+```
+2.正则
+```
+var hammingWeight = function(n) {
+    var seconds = n.toString("2")
+    var one = seconds.replace(/0/g,"")
+    return one.length
+};
+
+```
+### 打家劫舍 动态规划
+```
+var rob = function(nums) {
+  if (nums.length === 0) {
+    return 0;
+  }else if(nums.length===2) {
+      return Math.max(nums[0],nums[1])
+  } 
+  else {
+    let dp = [];
+    dp[0] = nums[0];
+    let max=dp[0];
+    for (let i = 1; i < nums.length; i++) {
+      if (i === 1) dp[i] = Math.max(dp[i - 1], nums[0],nums[1]);
+      else dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+      max = dp[i];
+    }
+    return max;
+  }
+};
+```
   
 
   

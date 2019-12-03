@@ -316,6 +316,202 @@ methods:{
 当前页面
 ![](/assets/preview.png)
 
+vuex使用（购物车案例）
+页面：
+![](/assets/productsCar.png)
+- 购物车数据分为两part,一个商品products，二是购物车cart
+- 首先全部商品列表（设计假数据接口来通过接口获取所有商品）
+  （以及结算时的函数）
+  ```
+  const _products = [
+    {"id": 1, "title": "iPad 4 Mini", "price": 500.01, "inventory": 2,src:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1852638158,294812004&fm=26&gp=0.jpg'},
+    {"id": 2, "title": "H&M T-Shirt", "price": 10.99, "inventory": 10,src:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1932044032,2016526258&fm=26&gp=0.jpg'},
+    {"id": 3, "title": "Charli XCX", "price": 19.99, "inventory": 5,src:'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=497783299,2210513014&fm=26&gp=0.jpg'}
+  ]
+  
+  export default {
+    getProducts (cb) {
+      setTimeout(() => cb(_products), 100)
+    },
+  
+    buyProducts (products, cb, errorCb) {
+      setTimeout(() => {
+        // simulate random checkout failure.
+        (Math.random() > 0.5 || navigator.userAgent.indexOf('PhantomJS') > -1)
+          ? cb()
+          : errorCb()
+      }, 100)
+    }
+  }
+  ```
+- 商品页面 请求接口获取数据
+  在products定义方法来请求数据
+  actions 必须要通过触发即 commit mutations才可以更改数据,
+  一般action里请求接口，然后触发mutations里对应的方法来更改数据
+  ```
+  const actions = {
+    getAllProducts ({ commit }) {
+      shop.getProducts(products => {
+        commit('setProducts', products)
+      })
+    }
+  }
+  const mutations = {
+    setProducts (state, products) {
+      state.all = products
+  },
+  ```
+  商品页面获取商品列表
+  ```
+  computed: mapState({
+    //   获取products中的所有产品all:[]
+      products: state => state.products.all
+  })
+  ```
+  然后展示数据,为了实现图片自适应，将图片设置为背景，然后进行布局,背景图片拼接为
+   <div :style="{backgroundImage: 'url('+product.src+')'}"  class="imgContainer"/>
+  ```
+  <div
+      class="diaryItem"
+      v-for="product in products"
+      :key="product.id">
+      <div :style="{backgroundImage: 'url('+product.src+')'}"  class="imgContainer"/>
+      <span>{{ product.title }}</span>
+      <span>{{ product.price |currency  }}</span>
+      <button
+          class="buyBtn"
+          :disabled="!product.inventory"
+          @click="addProductToCart(product)">
+          Add to cart
+      </button>
+  </div>
+  ```
+  - 点击按钮将商品加入购物车，先将支付状态是为null,
+    判断购物车内是否有同样商品，若有找出然后将数量+1，若不存在，则将该商品加入购物车
+    然后将对应商品的数量-1
+  ```
+  // 添加商品进入购物车 actions
+    addProductToCart ({ state, commit }, product) {
+        // 先将支付状态支置null
+      commit('setCheckoutStatus', null)
+    //   判断商品库存是否大于0
+      if (product.inventory > 0) {
+        //  找出购物车内与新增商品id相同的数据
+        const cartItem = state.items.find(item => item.id === product.id)
+        if (!cartItem) {
+            // 新增一种未添加过的商品
+          commit('pushProductToCart', { id: product.id })
+        } else {
+            // 添加过的商品，增加商品数量
+          commit('incrementItemQuantity', cartItem)
+        }
+        // 从商品里移除一个商品数量 全局中提交action 增加root:true
+        commit('products/decrementProductInventory', { id: product.id }, { root: true })
+      }
+    }
+  ```
+  // cart
+  ```
+  const mutations = {
+    setCheckoutStatus (state, status) {
+      state.checkoutStatus = status
+    },
+
+    pushProductToCart (state, { id }) {
+      state.items.push({
+        id,
+        quantity: 1
+      })
+    },
+  
+    incrementItemQuantity (state, { id }) {
+      const cartItem = state.items.find(item => item.id === id)
+      cartItem.quantity++
+    }
+  }
+  ```
+  products:
+  ```
+  //   减去一条商品数量
+  decrementProductInventory (state, { id }) {
+    const product = state.all.find(product => product.id === id)
+    product.inventory--
+  }
+  ```
+  - 购物车内商品总价格及信息
+    getters:
+    ```
+    const getters = {
+    // 购物车内商品 对于模块内部的 getter，根节点状态会作为第三个参数暴露出来：
+    cartProducts: (state, getters, rootState) => {
+      return state.items.map(({ id, quantity }) => {
+        const product = rootState.products.all.find(product => product.id === id)
+        return {
+          src:product.src,
+          title: product.title,
+          price: product.price,
+          quantity
+        }
+      })
+    },
+  
+    // 购物车内商品价格
+    cartTotalPrice: (state, getters) => {
+      return getters.cartProducts.reduce((total, product) => {
+        return total + product.price * product.quantity
+      }, 0)
+    }
+  }
+    ```
+    页面内取数据
+    ```
+     computed: {
+      ...mapState({
+        checkoutStatus: state => state.cart.checkoutStatus
+      }),
+      // 获取购物车内初始商品及初始价格
+      ...mapGetters('cart', {
+        products: 'cartProducts',
+        total: 'cartTotalPrice'
+      })
+    },
+    ```
+  - 结算
+  ```
+  methods: {
+    //   结算
+    checkout (products) {
+      this.$store.dispatch('cart/checkout', products)
+    }
+  }
+  ```
+  ```
+  checkout ({ commit, state }, products) {
+      const savedCartItems = [...state.items]
+      commit('setCheckoutStatus', null)
+      // empty cart
+      commit('setCartItems', { items: [] })
+      // 结算接口
+      shop.buyProducts(
+        products,
+        () => commit('setCheckoutStatus', 'successful'),
+        () => {
+          commit('setCheckoutStatus', 'failed')
+          // rollback to the cart saved before sending the request
+          commit('setCartItems', { items: savedCartItems })
+        }
+      )
+    },
+  ```
+  支付成功清空购物车
+  支付是被购物车数量不变
+  ```
+  setCartItems (state, { items }) {
+      state.items = items
+  },
+  ```
+
+
 
 
 

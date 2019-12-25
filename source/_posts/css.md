@@ -118,4 +118,81 @@ css进行按定制比例缩放
         background: linear-gradient(to right, transparent, #fff 55%);
         }   
    ```
+3.三角形画三角形
+左三角
+```
+#talkbubble {
+    margin-left:30px;
+   width: 120px; 
+   height: 80px; 
+   background: red;
+   position: relative;
+   -moz-border-radius:    10px; 
+   -webkit-border-radius: 10px; 
+   border-radius:         10px;
+}
+#talkbubble:before {
+   content:"";
+   position: absolute;
+   right: 100%;
+   top: 26px;
+   width: 0;
+   height: 0;
+   border-top: 13px solid transparent;
+   border-right: 26px solid red;
+   border-bottom: 13px solid transparent;
+}
+```
+```
+#triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 100px solid red;
+} 
+
+#triangle-left {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-right: 100px solid red;
+    border-bottom: 50px solid transparent;
+}
+
+ #triangle-right {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-left: 100px solid red;
+    border-bottom: 50px solid transparent;
+} 
+
+#triangle-topleft {
+    width: 0;
+    height: 0;
+    border-top: 100px solid red; 
+    border-right: 100px solid transparent;          
+}
+#triangle-topright {
+    width: 0;
+    height: 0;
+    border-top: 100px solid red; 
+    border-left: 100px solid transparent;
+}
+#triangle-bottomleft {
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid red; 
+    border-right: 100px solid transparent;  
+}  
+
+#triangle-bottomright {
+    width: 0;
+    height: 0;
+    border-bottom: 100px solid red; 
+    border-left: 100px solid transparent;
+}
+```
+
 

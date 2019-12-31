@@ -14,6 +14,19 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
 3.npm install webpack webpack-cli --save-dev
 (webpack 3版本之前webpack里集成了webpack-cli， 4之后的版本需要单独安装； --save-dev见注解)
 4.在文件夹下新建一个文件名字必须叫 webpack.config.js（在里面进行配置）
+  ```
+  'use strict'
+   const path = require('path')
+
+    module.exports ={
+        mode:'production',
+        entry:'./src/index.js',
+        output:{
+            path:path.join(__dirname,'dist'),
+            filename:'bundle.js'
+        }
+    }
+  ```
 5.webpack打包需要在webpack目录(node_modules/.bin/webpack)下允许，所以优化方式时在package.json里面script里面添加一行,因为package.json可以直接允许.bin,然后npm run dev 来进行打包
 "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,11 +38,11 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
 
 1.entry 
   入口 指定文件作为依赖图的开始
-  单入口
+  单入口 entry是一个字符串
   module.exports = {
     entry: './path/to/my/entry/file.js'
   };
-  多入口
+  多入口 entry是一个对象
   module.exports = {
     entry: {
         bundle1: './main1.js',
@@ -45,14 +58,29 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
         bundle1: './main1.js',
         bundle2: './main2.js'
     },
+    // 单入口
+    //output:{
+    //    path:path.join(__dirname,'dist'),
+    //    filename:'bundle.js'
+    //}
+    // 多入口
     output: {
             filename: '[name].js'
-            path: path.resolve(__dirname, 'dist'),
+            path: path.join(__dirname, 'dist'),
             // 指定存放路径
         }
   };
 3.loader
   loader 让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块
+
+  babel-loader : 转换es6 es7等js新语法特性
+  css-loader ：支持.css文件的加载和解析
+  less-loader：将less 转换为 css
+  ts-loader ：将ts转换为js
+  file-loader ：进行图片字体等的打包
+  raw-loader ：将文件以字符串的形式导入
+  thread-loader ：多进程打包js 和 css
+
 
   const config = {
     output: {
@@ -81,8 +109,25 @@ webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module b
 
 4.plugins 任何loaders无法做的都可以通过plugins
 用于bundle文件的优化，资源管理和环境变量注入，作用于整个构建过程
+手动dist删除目录等
+
+CommonsChunkPlugin:将chunk相同的模块代码提取成公共js
+CleanWebpackPlugin:清理构建目录
+ExtractTextWebpackPlugin：将css从bundle文件里提取成一个独立的css 文件
+CopyWebpackPlugin：将文件或者文件夹拷贝到构建的输入目录
+HtmlWebpackPlugin：创建html去承载输出的bundle
+UglifyjsWebpackPlugin：压缩js
+ZipWebpackPlugin：将打包出的资源生成一个zip
+
+
 
 5.mode 用来指定当前的构建环境
+production(默认) development none
+process.env.NODE_ENV  development ：默认开启NamedChunksPlugin  NamedModulesPlugin
+process.env.NODE_ENV  production  : 代码压缩等
+                      none： 不开启
+
+
 
 6.文件指纹 主要用于做版本管
 文件指纹就是文件打包输出文件名的后缀 Hash，Chunkhash，Contenthash
@@ -369,6 +414,53 @@ splitChunks:{
 数据
 
 21.webpack之优化构建时命令行的显示日志（stats、friendly-errors-webpack-plugin）
+
+
+22.babelrc
+preset-env preset-react
+
+23.解析css
+css-loader style-loader
+将样式通过style标签加入到页面 链式调用
+use:['style-loader','css-loader']
+less  通过less-loader 转换成css 
+use:['style-loader','css-loader','less-loader']
+
+24.解析图片 file-loader
+test:/\.(png|svg|jpg|svg)$/
+ues:'file-loader'
+
+url-loader
+当文件大小小于limit时，不单独打包出来，而是嵌在引入页面内
+use:[
+    {
+        loader:'url-loader',
+        options:{
+            limit:10240,
+        },
+    },
+]
+
+25.文件监听
+原理分析：轮询判断文件的最后编辑时间是否发生变化
+某个文件发生了变化，不会立即告诉监听者，而是先缓存起来，等aggregateTime
+module.export ={
+    // 默认false
+    watch:true,
+    // 监听模式下 ，watchOptions 才有意义
+    watchOptions:{
+        // 默认为空 不监听的文件或文件夹 支持正则匹配
+        ignored:/node_modules/,
+        // 监听后等300ms再去执行 默认300ms
+        aggregateTimeOut:300,
+        // 判断文件是否发生变化通过不断的询问系统文件有没有变化 默认1m 1000次
+        poll:1000,
+    }
+}
+
+26.热更新 webpack-dev-server 
+与HotModuleReplacementPlugin一起使用
+
 
 
 

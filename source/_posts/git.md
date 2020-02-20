@@ -42,5 +42,28 @@ fatal: Authentication failed for 'http://********
   6. git 切换分支开发
   git checkout -b 分支名
   比如 git checkout -b dev
+  7. Pull Request
+    -先 fork 别人的仓库，相当于拷贝一份，相信我，不会有人直接让你改修原仓库的
+    -clone 到本地分支，做一些 bug fix
+    -发起 pull request 给原仓库，让他看到你修改的 bug
+    -原仓库 review 这个 bug，如果是正确的话，就会 merge 到他自己的项目中
+    1. 先点击 fork 仓库，项目现在就在你的账号下了
+    ![](/assets/fork.jpg)
+    ![](/assets/local.jpg)
+    2. 在你自己的机器上 git clone 这个仓库，切换分支（也可以在 master 下），做一些修改。
+    ```
+    ~  git clone https://github.com/beepony/bootstrap.git
+    ~  cd bootstrap
+    ~  git checkout -b test-pr
+    ~  git add . && git commit -m "test-pr"
+    ~  git push origin test-pr
+    ```
+    3. 完成修改之后，回到 test-pr 分支，点击旁边绿色的 Compare & pull request 按钮
+    ![](/assets/pull.jpg)
+    4. 添加一些注释信息，确认提交
+    ![](/assets/pull-request.jpg)
 
+
+参考博客：
+[https://www.zhihu.com/question/21682976](https://www.zhihu.com/question/21682976)
 

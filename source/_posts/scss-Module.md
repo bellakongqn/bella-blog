@@ -23,6 +23,7 @@ thumbnail: '../assets/scss.jpg'
     }
 }
 ```
+<!-- more -->
 二、属性值的复用——定义变量
 ```
 $success-color: #dff0d8;

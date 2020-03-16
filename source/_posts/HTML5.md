@@ -1,13 +1,7 @@
-<!--
- * @Author: kqn
- * @Date: 2020-03-16 14:09:31
- * @LastEditors: your name
- * @LastEditTime: 2020-03-16 16:23:29
- * @Description: 
- -->
 ---
 title: HTML5
 tags:
+    - HTML
     - HTML
 categories: HTML
 thumbnail: '../assets/html.png'

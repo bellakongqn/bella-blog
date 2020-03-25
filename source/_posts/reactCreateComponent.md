@@ -1,5 +1,6 @@
 ---
 title: React 创建组件的三种方法
+date: 2019-08-10 12:10:10
 tags:
     - React
 categories: React

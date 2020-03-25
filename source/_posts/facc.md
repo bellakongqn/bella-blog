@@ -1,5 +1,6 @@
 ---
 title: react 函数作为子组件
+date: 2019-06-17 12:10:10
 tags:
     - react
 categories: react

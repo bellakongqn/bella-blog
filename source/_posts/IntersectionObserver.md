@@ -1,5 +1,6 @@
 ---
 title: IntersectionObserver
+date: 2019-12-12 12:10:10
 tags:
     - IntersectionObserver
 categories: javascript

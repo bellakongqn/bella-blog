@@ -1,5 +1,6 @@
 ---
 title: Redux
+date: 2019-07-10 12:10:10
 tags:
     - Redux
 categories: React

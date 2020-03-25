@@ -1,5 +1,6 @@
 ---
 title: React Component 与 PureComponentReact 区别
+date: 2019-07-12 12:10:10
 tags:
     - React
 categories: React

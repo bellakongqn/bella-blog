@@ -1,5 +1,6 @@
 ---
 title: 跨域
+date: 2019-10-19 12:10:10
 tags:
     - ajax
 categories: ajax

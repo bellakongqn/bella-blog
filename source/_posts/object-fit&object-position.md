@@ -1,6 +1,6 @@
 ---
 title: oject-fit & object-position & background-size & background-position
-date: 2030-03-31 08:47:10
+date: 2020-04-03 11:01:10
 tags:
     - CSS
 categories: CSS

@@ -1,6 +1,6 @@
 ---
 title: grid 布局
-date: 2030-03-31 08:47:10
+date: 2020-03-31 08:47:10
 tags:
     - CSS
 categories: CSS
@@ -11,7 +11,7 @@ thumbnail: '../assets/grid.png'
 
 display: grid 指定一个容器采用网格布局,容器元素默认位块级元素；
 display: inline-grid 采用网格布局，容器元素为行内元素
-
+<!-- more -->
 ### grid-template-columns，grid-template-rows
 
 px ：列宽和行高都是100px

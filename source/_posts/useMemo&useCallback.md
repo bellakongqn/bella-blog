@@ -114,4 +114,27 @@ function DualCounter() {
 
 我想重申下，在没有测量前，强烈建议不要使用 React.Memo （或者它的朋友 PureComponent 和 shouldComponentUpdate），因为优化总会带来成本，并且你需要确保知道会有多少成本和收益，这样你才能决定在你的案例中它是否能真的有帮助（而不是有害的）。正如我们上面所说的那样，一直保持正确是一件很困难的事情，所以你可能无法获得任何好处。
 
+useCallback、useMemo 差别
+```
+const memoizedCallback = useCallback(
+  () => {
+    doSomething(a, b);
+  },
+  [a, b],
+);
+```
+在a和b的变量值不变的情况下，memoizedCallback的引用不变。即：useCallback的第一个入参函数会被缓存，从而达到渲染性能优化的目的
+缓存一个函数，这个函数如果是由父组件传递给子组件，或者自定义hooks里面的函数【通常自定义hooks里面的函数，不会依赖于引用它的组件里面的数据】，这时候我们可以考虑缓存这个函数，好处：
+
+1，不用每次重新声明新的函数，避免释放内存、分配内存的计算资源浪费
+2，子组件不会因为这个函数的变动重新渲染。【和React.memo搭配使用】
+
+```
+ const calcValue = useMemo(() => {
+    return Array(100000).fill('').map(v => /*一些大量计算*/ v);
+  }, [count]);
+```
+useMemo用来缓存数据，当 组件内部某一个渲染的数据，需要通过计算而来，这个计算是依赖与特定的state、props数据，我们就用useMemo来缓存这个数据，以至于我们在修改她们没有依赖的数据源的情况下，多次调用这个计算函数，浪费计算资源
+
 参考:[https://jancat.github.io/post/2019/translation-usememo-and-usecallback/](https://jancat.github.io/post/2019/translation-usememo-and-usecallback/)
+[https://blog.csdn.net/a5534789/article/details/103775109](https://blog.csdn.net/a5534789/article/details/103775109)

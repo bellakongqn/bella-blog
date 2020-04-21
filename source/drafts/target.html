@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="1">
+        1 click me
+        <div id="2">
+            2 click me as well
+        </div>
+    </div>
+    <div id="result">
+        <div>result:</div>
+    </div>
+    <script>
+        window.onload = function() {
+            var resultElem = document.getElementById('result')
+            document.getElementById('1').addEventListener(
+                'click',
+                function(event) {
+                    resultElem.innerHTML += ('<div>target: ' + event.target.id + '</div>')
+                    resultElem.innerHTML += ('<div>currentTarget: ' + event.currentTarget.id + '</div>')
+                },
+                false
+            )
+        }
+    </script>
+</body>
+</html>

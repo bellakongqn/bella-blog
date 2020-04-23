@@ -64,7 +64,7 @@ diff 算法的工作原理：
 2. 但是在移动前需要将当前节点在旧集合中的位置与 lastIndex 进行比较 if(child._mountIndex < lastIndex)，否则不执行操作。
 
 - 这是一种顺序优化方式， lastIndex 一直在更新，表示访问过的节点在旧集合中最右的位置（最大的位置）。
-1. 如果新集合中当前当前访问的节点比 lastIndex 大，说明当前访问节点在旧集合中就比上一个节点位置靠后，则该节点不会影响其他节点的位置，因此不同添加到差异队列中，也就不执行移动操作。
+1. 如果新集合中当前当前访问的节点比 lastIndex 大，说明当前访问节点在旧集合中就比上一个节点位置靠后，则该节点不会影响其他节点的位置，因此不用添加到差异队列中，也就不执行移动操作。
 2. 只有当访问的节点比 lastIndex 小的时候，才需要继续移动.
 
 节点相同，位置不同
@@ -88,7 +88,32 @@ React diff 的不足之处
 ![](/assets/componentDiff3.png)
 此例中D直接从最后一位提升至第一位，导致lastIndex在第一步直接提升为3，使ABC在进行index与lastIndex的判断时均处于 index < lastIndex 的情况，使ABC都需要做移动操作。所以我们应该减少将最后一个节点提升至第一个的操作，如果操作频率较大或者节点数量较多时，会对渲染性能产生影响。
 
-
 参考：
 [https://juejin.im/post/5d81eec56fb9a06add4e63ba](https://juejin.im/post/5d81eec56fb9a06add4e63ba)
-[ptbird.cn/react-diff-from-code.html](ptbird.cn/react-diff-from-code.html)
+[ptbird.cn/react-diff-from-code.html](ptbird.cn/react-diff-from-code.html)\
+
+Virtual Dom快，有两个前提
+1. Javascript很快
+2. Dom很慢
+当创建一个元素比如div，有以下几项内容需要实现： HTML element、Element、GlobalEventHandler。简单的说，就是插入一个Dom元素的时候，这个元素上本身或者继承很多属性如 width、height、offsetHeight、style、title，另外还需要注册这个元素的诸多方法，比如onfucos、onclick等等。 这还只是一个元素，如果元素比较多的时候，还涉及到嵌套，那么元素的属性和方法等等就会很多，效率很低。
+![](/assets/dom.png)
+这个元素会挂载默认的styles、得到这个元素的computed属性、注册相应的Event Listener、DOM Breakpoints以及大量的properties，这些属性、方法的注册肯定是需要耗费大量时间的。
+
+尤其是在js操作DOM的过程中，不仅有dom本身的繁重，js的操作也需要浪费时间，我们认为js和DOM之间有一座桥，如果你频繁的在桥两边走动，显然效率是很低的，如果你的JavaScript操作DOM的方式还非常不合理，那么显然就会更糟糕了。 
+
+而 React的虚拟DOM就是解决这个问题的！ 虽然它解决不了DOM自身的繁重，但是虚拟DOM可以对JavaScript操作DOM这一部分内容进行优化
+
+#### 虚拟DOM和DOM之间的关系
+
+首先，Virtual DOM并没有完全实现DOM，即虚拟DOM和真正地DOM是不一样的，Virtual DOM最主要的还是保留了Element之间的层次关系和一些基本属性。因为真实DOM实在是太复杂，一个空的Element都复杂得能让你崩溃，并且几乎所有内容我根本不关心好吗。所以Virtual DOM里每一个Element实际上只有几个属性，即最重要的，最为有用的，并且没有那么多乱七八糟的引用，比如一些注册的属性和函数啊，这些都是默认的，创建虚拟DOM进行diff的过程中大家都一致，是不需要进行比对的。所以哪怕是直接把Virtual DOM删了，根据新传进来的数据重新创建一个新的Virtual DOM出来都非常非常非常快。（每一个component的render函数就是在做这个事情，给新的virtual dom提供input）。
+
+所以，引入了Virtual DOM之后，React是这么干的：你给我一个数据，我根据这个数据生成一个全新的Virtual DOM，然后跟我上一次生成的Virtual DOM去 diff，得到一个Patch，然后把这个Patch打到浏览器的DOM上去。完事。并且这里的patch显然不是完整的虚拟DOM，而是新的虚拟DOM和上一次的虚拟DOM经过diff后的差异化的部分。
+
+假设在任意时候有，VirtualDom1 == DOM1 （组织结构相同, 显然虚拟DOM和真实DOM是不可能完全相等的，这里的==是js中非完全相等）。当有新数据来的时候，我生成VirtualDom2，然后去和VirtualDom1做diff，得到一个Patch（差异化的结果）。然后将这个Patch去应用到DOM1上，得到DOM2。如果一切正常，那么有VirtualDom2 == DOM2（同样是结构上的相等）。
+
+其实是由于每次生成virtual dom很快，diff生成patch也比较快，而在对DOM进行patch的时候，虽然DOM的变更比较慢，但是React能够根据Patch的内容，优化一部分DOM操作，比如之前的那个例子。
+
+重点就在最后，哪怕是我生成了virtual dom(需要耗费时间)，哪怕是我跑了diff（还需要花时间），但是我根据patch简化了那些DOM操作省下来的时间依然很可观（这个就是时间差的问题了，即节省下来的时间 > 生成 virtual dom的时间 + diff时间）。所以总体上来说，还是比较快。
+
+参考：
+[https://www.cnblogs.com/zhuzhenwei918/p/7271305.html](https://www.cnblogs.com/zhuzhenwei918/p/7271305.html)

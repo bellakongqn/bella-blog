@@ -90,6 +90,7 @@ Animal.prototype.sing = function(){
 
 // Dog
 function Dog(){}
+Dog.prototype = new Animal()
 Dog.prototype.category = 'Dog'
 Dog.prototype.bar = function(){
     console.log(`${this.category} can 汪汪汪`)
@@ -127,6 +128,25 @@ Animal.prototype.__proto__ === Object.prototype
 Object.prototype.__proto__ === null
 ```
 > 原型链的属性查找机制：当查找对象的属性时，如果在对象中找不到该属性时，会沿着该对象的原型链上的原型继续寻找，即对象的 \_\_proto\_\_ 和 构造函数的 prototype，若在原型链中的某一处原型找到则会返回该属性并停止寻找，若直到原型链的最顶层的原型对象 Object.prototype 都找不到则返回 null
+
+### 判断实例的类型
+> 在创建实例之后，通过 instanceof 来判断类型的时，若右侧的类型在该实例的原型链上存在，判断的结果都会是 true，所以在使用 instanceof 来判断类型时要注意一下
+
+```
+function Animal(){}
+function Dog(){}
+Dog.prototype = new Animal()
+
+let animal1 = new Animal()
+let dog1 = new Dog()
+
+console.log(animal1 instanceof Animal)// true
+console.log(animal1 instanceof Dog) // false
+console.log(animal1 instanceof Object) // true
+console.log(dog1 instanceof Animal) // true
+console.log(dog1 instanceof Dog) // true
+console.log(dog1 instanceof Object) // true
+```
 
 参考博客：
 [https://juejin.im/post/5de488aa6fb9a0718f68c2f1](https://juejin.im/post/5de488aa6fb9a0718f68c2f1)

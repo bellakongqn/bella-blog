@@ -32,6 +32,6 @@ BFC：Block Formatting Contexts (块级格式化上下文)
 3. BFC 可以阻止元素被浮动元素覆盖
 ```
 <div style="height: 100px;width: 100px;float: left;background: lightblue">我是一个左浮动的元素</div>
-<div style="height: 200px;background: #eee">我是一个没有设置浮动, 
+<div style="height: 200px;background: #eee;overflow: hidden">我是一个没有设置浮动, 
 也没有触发 BFC 元素, width: 200px; height:200px; background: #eee;</div>
 ```

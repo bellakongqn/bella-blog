@@ -36,6 +36,9 @@ ETag/If-None-Match 的值是一串 hash 码，代表的是一个资源的标识�
 - Last-Modified/If-Modified-Since
 Last-Modified/If-Modified-Since 的值代表的是文件的最后修改时间，第一次请求服务端会把资源的最后修改时间放到 Last-Modified 响应头中，第二次发起请求的时候，请求头会带上上一次响应头中的 Last-Modified 的时间，并放到 If-Modified-Since 请求头属性中，服务端根据文件最后一次修改时间和 If-Modified-Since 的值进行比较，如果相等，返回 304 ，并加载浏览器缓存
 
+ETag/If-None-Match优先级比Last-Modified/If-Modified-Since高；
+Last-Modified/If-Modified-Since有个1S问题，即服务端在1S内修改文件，且再次受到请求时，会错误的返回304。
+
 > 浏览器缓存刷新
 在地址栏中输入网址后按回车或点击转到按钮
 浏览器以最少的请求来获取网页的数据，浏览器会对所有没有过期的内容直接使用本地缓存，从而减少了对浏览器的请求。所以，Expires，max-age标记只对这种方式有效。

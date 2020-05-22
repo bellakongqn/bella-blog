@@ -317,3 +317,29 @@ ul > li:not(:last-child)::after {
 }
 ```
 
+### white-space、word-break、word-wrap、
+white-space: 控制空白字符的显示. normal | nowrap | pre | pre-wrap | pre-line
+nowrap: 不仅空格被合并，换行符无效，连原本的自动换行都没了！只有</br>才能导致换行！所以这个值的表现还是挺简单的，我们可以理解为永不换行。
+pre: 空格和换行符全都被保留了下来！不过自动换行还是没了。保留，所以pre其实是preserve的缩写，这样就好记了。
+pre-wrap: pre-wrap就是preserve+wrap，保留空格和换行符，且可以自动换行 pre-wrap会保留空格
+pre-line: pre-line会把多个空格合并成一个+自动换行
+
+word-break : 控制单词如何被拆分换行. normal | break-all | keep-all
+keep-all : 所有“单词”一律不拆分换行,只有空格可以触发自动换行
+break-all : 所有单词碰到边界一律拆分换行
+
+
+word-wrap: 也是控制单词如何被拆分换行的 normal | break-word
+break-word: 只有当一个单词一整行都显示不下时，才会拆分换行该单词。
+
+### css加载会造成阻塞嘛？
+#### css 不会阻塞Dom 树的解析，会阻塞Dom 树的渲染
+#### css加载会阻塞后面js语句的执行
+
+1. DOM解析和CSS解析是两个并行的进程，所以这也解释了为什么CSS加载不会阻塞DOM的解析。
+2. 然而，由于Render Tree是依赖于DOM Tree和CSSOM Tree的，所以他必须等待到CSSOM Tree构建完成，也就是CSS资源加载完成(或者CSS资源加载失败)后，才能开始渲染。因此，CSS加载是会阻塞Dom的渲染的。
+3. 由于js可能会操作之前的Dom节点和css样式，因此浏览器会维持html中css和js的顺序。因此，样式表会在后面的js执行前先加载执行完毕。所以css会阻塞后面js的执行。
+
+#### DOMContentLoaded
+1. 如果页面中同时存在css和js，并且存在js在css后面，则DOMContentLoaded事件会在css加载完后才执行
+2. 其他情况下，DOMContentLoaded都不会等待css加载，并且DOMContentLoaded事件也不会等待图片、视频等其他资源加载。

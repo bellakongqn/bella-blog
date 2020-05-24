@@ -4,12 +4,12 @@ const DEFAULT_WIDGETS = [
     {
         type: 'profile',
         position: 'left',
-        author: 'Your name',
-        author_title: 'Your title',
-        location: 'Your location',
-        avatar: null,
+        author: 'bella&gege',
+        author_title: '兔子与狗',
+        location: '火星',
+        avatar: '/images/avatar.png',
         gravatar: null,
-        avatar_rounded: false,
+        avatar_rounded: true,
         follow_link: 'https://github.com/bellakongqn',
         social_links: {
             Github: {

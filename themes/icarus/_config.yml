@@ -35,8 +35,8 @@ widgets:
         author: bella&gege
         author_title: 兔子与狗
         location: 大连
-        avatar: /images/avatar.png
-        gravatar: /images/avatar.png
+        avatar: /img/avatar.png
+        gravatar: /img/avatar.png
         avatar_rounded: false
         follow_link: 'https://github.com/bellakongqn'
         social_links:
@@ -87,7 +87,7 @@ providers:
     fontcdn: google
     iconcdn: fontawesome
 head:
-    favicon: /images/favicon.svg
+    favicon: /images/avatar.png
     canonical_url: 
     open_graph:
         fb_app_id: 

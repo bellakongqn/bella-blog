@@ -96,12 +96,12 @@ Profile.Cacheable = cacheComponent(Profile, 'widget.profile', props => {
     const { url_for, _p, __ } = helper;
 
     function getAvatar() {
-        if (gravatar) {
-            return gravatrHelper(gravatar, 128);
-        }
-        if (avatar) {
-            return url_for(avatar);
-        }
+        // if (gravatar) {
+        //     return gravatrHelper(gravatar, 128);
+        // }
+        // if (avatar) {
+        //     return url_for(avatar);
+        // }
         return url_for('/img/avatar.png');
     }
 

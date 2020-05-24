@@ -27,17 +27,9 @@ widget:
     adsense: '广告'
 article:
     more: '阅读更多'
-    comments: '评论'
     read: '读完'
     about: '大约'
     words: '个字'
-donate:
-    title: '喜欢这篇文章？打赏一下作者吧'
-    alipay: '支付宝'
-    wechat: '微信'
-    paypal: 'Paypal'
-    patreon: 'Patreon'
-    buymeacoffee: '送我杯咖啡'
 plugin:
     backtotop: '回到顶端'
     visit: '%s次访问'

@@ -32,8 +32,8 @@ widgets:
     -
         type: profile
         position: left
-        author: bella&gege
-        author_title: 兔子与狗
+        author: bella
+        author_title: 兔子与小狗
         location: 大连
         avatar: /img/avatar.png
         gravatar: /img/avatar.png

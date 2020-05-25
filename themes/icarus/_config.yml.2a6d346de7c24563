@@ -85,9 +85,9 @@ widgets:
         # Where should the widget be placed, left or right
         position: left
         # Author name to be shown in the profile widget
-        author: bella&gege
+        author: bella
         # Title of the author to be shown in the profile widget
-        author_title: 兔子与狗
+        author_title: 兔子与小狗
         # Author's current location to be shown in the profile widget
         location: 大连
         # Path or URL to the avatar to be shown in the profile widget

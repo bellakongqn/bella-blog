@@ -4,8 +4,8 @@ const DEFAULT_WIDGETS = [
     {
         type: 'profile',
         position: 'left',
-        author: 'bella&gege',
-        author_title: '兔子与狗',
+        author: 'bella',
+        author_title: '兔子与小狗',
         location: '火星',
         avatar: '/images/avatar.png',
         gravatar: null,
@@ -56,7 +56,7 @@ const ProfileSpec = {
     author: {
         [type]: 'string',
         [doc]: 'Author name to be shown in the profile widget',
-        [defaultValue]: 'Bella&Gege'
+        [defaultValue]: 'bella'
     },
     author_title: {
         [type]: 'string',

@@ -6,7 +6,7 @@ navbar:
         Archives: /archives
         Categories: /categories
         Tags: /tags
-        About: /about
+        # About: /about
     links:
         Download on GitHub:
             icon: fab fa-github
@@ -46,12 +46,12 @@ widgets:
     -
         type: toc
         position: left
-    -
-        type: links
-        position: left
-        links:
-            Hexo: 'https://hexo.io'
-            PPOffice: 'https://github.com/bellakongqn'
+    # -
+    #     type: links
+    #     position: left
+    #     links:
+    #         Hexo: 'https://hexo.io'
+    #         PPOffice: 'https://github.com/bellakongqn'
     -
         type: categories
         position: left

@@ -1,6 +1,7 @@
 ---
-title: React Redux 在 React Hooks 中的应用
+title: useEffect
 date: 2019-10-12 12:10:10
+update: 2020-06-02 13:14:21
 tags:
     - React
 categories: React
@@ -72,7 +73,47 @@ function SearchResults() {
 }
 ```
 8.但我不能把这个函数放到Effect里
-loading
+```
+function getFetchUrl(query) {
+  return 'https://hn.algolia.com/api/v1/search?query=' + query;
+}
+
+function SearchResults() {
+  useEffect(() => {
+    const url = getFetchUrl('react');
+    // ... Fetch data and do something ...
+  }, []); // ✅ Deps are OK
+
+  useEffect(() => {
+    const url = getFetchUrl('redux');
+    // ... Fetch data and do something ...
+  }, []); // ✅ Deps are OK
+
+  // ...
+}
+```
+useCallBack()
+我们使函数本身只在需要的时候才改变，而不是去掉对函数的依赖。
+```
+function SearchResults() {
+  // ✅ Preserves identity when its own deps are the same
+  const getFetchUrl = useCallback((query) => {
+    return 'https://hn.algolia.com/api/v1/search?query=' + query;
+  }, [query]);  // ✅ Callback deps are OK
+
+  useEffect(() => {
+    const url = getFetchUrl('react');
+    // ... Fetch data and do something ...
+  }, [getFetchUrl]); // ✅ Effect deps are OK
+
+  useEffect(() => {
+    const url = getFetchUrl('redux');
+    // ... Fetch data and do something ...
+  }, [getFetchUrl]); // ✅ Effect deps are OK
+
+  // ...
+}
+```
 
 
 参考文档：

@@ -1,13 +1,13 @@
 ---
-title: useEffect
-date: 2019-10-12 12:10:10
+title: useEffect| useRef
+date: 2020-06-03 12:10:10
 update: 2020-06-02 13:14:21
 tags:
     - React
 categories: React
 ---
 
-useEffect的使用
+### useEffect的使用
 1.每一次渲染都有它自己的 Props and State
 2.每一次渲染都有它自己的事件处理函数
 3.每次渲染都有它自己的Effects
@@ -115,6 +115,75 @@ function SearchResults() {
 }
 ```
 
+### useRef
+1. 获取DOM元素的节点
+```
+import React, { useEffect, useRef } from 'react';
+function App() {
+  const inputEl = useRef(null);
+  const onButtonClick = () => {
+    // `current` 指向已挂载到 DOM 上的文本输入元素
+    inputEl.current.focus();
+  };
+  return (
+    <>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
+    </>
+  );
+}
+```
+2. 获取子组件的实例
+```
+function FancyInput(props, ref) {
+  const inputRef = useRef();
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current.focus();
+    }
+  }));
+  return <input ref={inputRef} ... />;
+}
+
+function InputWithFocusButton() {
+    const inputRef = useRef(null);
+
+    function onButtonClick() {
+        console.log('子组件input的对象:', inputRef.current);
+        inputRef.current.focus()
+    };
+    return (
+        <>
+            <FancyInput ref={inputRef} /> 
+            <button onClick={onButtonClick}>Focus the input</button>
+        </>
+    );
+}
+```
+
+3. 渲染周期之间共享数据的存储（state不能存储跨渲染周期的数据，因为state的保存会触发组件重渲染）
+```
+function Counter() {
+  const [count, setCount] = useState(0);
+  const latestCount = useRef(count);
+
+  useEffect(() => {
+    latestCount.current = count;
+    setTimeout(() => {
+      console.log(`You clicked ${latestCount.current} times`);
+    }, 3000);
+  });
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
+```
 
 参考文档：
 [redux hooks](https://react-redux.js.org/next/api/hooks)

@@ -23,9 +23,8 @@ class Footer extends Component {
                             {logo && logo.text ? logo.text : <img src={logoUrl} alt={siteTitle} height="28" />}
                         </a>
                         <p class="size-small">
-                            <span dangerouslySetInnerHTML={{ __html: `&copy; ${siteYear} ${author || siteTitle}` }}></span>
-                            &nbsp;&nbsp;Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>&nbsp;&&nbsp;
-                            <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a>
+                            <span dangerouslySetInnerHTML={{ __html: `&copy;2019-2020 ${author || siteTitle}` }}></span>
+                            &nbsp;&nbsp;ICP证：<a href="https://www.beian.miit.gov.cn/" target="_blank" rel="noopener">辽ICP备20007264号-1</a>
                             {showVisitorCounter ? <br /> : null}
                             {showVisitorCounter ? <span id="busuanzi_container_site_uv"
                                 dangerouslySetInnerHTML={{ __html: visitorCounterTitle }}></span> : null}

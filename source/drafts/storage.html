@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>storage change</title>
+    <style>
+        .cart {
+            position: relative;
+            border: 1px solid #ccc;
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        #num {
+            float: right;
+            margin:5px 5px 0 0;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            font-size: 12px;
+            background: red;
+            border-radius: 50%;
+            color: #fff;
+        }
+
+        .list {
+            list-style: none;
+        }
+
+        .list li {
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .list span {
+            text-decoration: none;
+            cursor:pointer;
+        }
+
+        .list a {
+            text-decoration: none;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart">
+        购物车 
+        <circle id="num"></circle>
+    </div> 
+    <ul class="list"> 
+        <li> <span>商品1 <a href="">+</a> <a href="">-</a> </span> </li> 
+        <li> <span>商品2 <a href="">+</a> <a href="">-</a> </span> </li> 
+        <li> <span>商品3 <a href="">+</a> <a href="">-</a> </span> </li> 
+        <li> <span>商品4 <a href="">+</a> <a href="">-</a> </span> </li> 
+        <li> <span>商品5 <a href="">+</a> <a href="">-</a> </span> </li> 
+        <li> <span>商品6 <a href="">+</a> <a href="">-</a> </span> </li> 
+    </ul>  
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script>
+        const STORAGE_KEY = "cartlist"
+
+        // 缓存
+        const getStorage = () => {
+            try {
+                let rets = window.localStorage.getItem(STORAGE_KEY)
+                
+                if (rets === null) {
+                    return []
+                }
+                return JSON.parse(rets)
+            }
+            catch(e){
+                return []
+            }
+        }
+        
+        // 添加商品
+        const addCart = (value) => {
+            let rets = getStorage()
+            
+            rets.push(value)
+            
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(rets))
+            
+            return rets	
+        }
+
+        // 删除商品
+        const minusCart = (value) => {
+            let rets = getStorage()
+            let idx = rets.indexOf(value)
+            
+            if (idx !== -1){
+                rets.splice(idx, 1)
+                window.localStorage.setItem(STORAGE_KEY, JSON.stringify(rets))
+            }
+            return rets	
+        }
+
+        // 点击
+        $(".list a").on("click", (e)=> {
+
+            // 判断增加|减少
+            let opIdx = $(e.target).parent().find("a").index(e.target)
+
+            // 拿到商品的index
+            let line = $(e.target).parent().parent()
+            let idx = $(".list li").index(line)
+            
+            opIdx === 0 ? addCart(idx) : minusCart(idx)
+            
+            render()
+            return false
+        })
+        
+        const render = () => {
+            // 那缓存数据
+            let rets = getStorage()
+            
+            if (rets.length){
+                $("#num").html(rets.length).show()
+            }
+            else {
+                $("#num").hide()
+            }
+            
+            $(".list li").each((i,el) => {
+                if (rets.includes(i)){
+                    $(el).find("a:nth-child(1)").css("visibility", "hidden")
+                    $(el).find("a:nth-child(2)").css("visibility", "visible")
+                    
+                }
+                else {
+                    $(el).find("a:nth-child(1)").css("visibility", "visible")
+                    $(el).find("a:nth-child(2)").css("visibility", "hidden")
+                }
+            })
+        }
+        window.addEventListener('storage', () => {
+            render()
+        })
+        render()
+    </script>
+</body>
+</html>

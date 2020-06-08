@@ -130,4 +130,20 @@ reduce()  对数组的值进行累计
 几种排序：
 冒泡排序、插入排序、选择排序、归并排序、快速排序
 
+有赞！！！！
+### 两个页面购物车同步问题
+```
+window.addEventListener('storage', () => {
+    // console.log('....')
+})
+```
+
+### webpack chunk 具体
+
+### react 新旧生命周期
+
+### csrf 
+
+### 跨域 img form post
+
 

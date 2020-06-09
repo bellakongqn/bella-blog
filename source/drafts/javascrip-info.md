@@ -317,3 +317,170 @@ function sayHi(who) {
 let sayHiDeferred = defer(sayHi, 2000);
 sayHiDeferred("John"); // 2 秒后显示：Hello, John
 ```
+### 原型，继承
+
+### 类
+#### class 基本语法
+```
+class User {
+  constructor(name) {
+    // 调用 setter
+    this.name = name;
+  }
+  get name() {
+    return this._name;
+  }
+  set name(value) {
+    if (value.length < 4) {
+      alert("Name is too short.");
+      return;
+    }
+    this._name = value;
+  }
+}
+let user = new User("John");
+alert(user.name); // John
+user = new User(""); // Name is too short.
+```
+#### 类继承
+1.class Child extends Parent：
+这意味着 Child.prototype.__proto__ 将是 Parent.prototype，所以方法会被继承。
+2.重写一个 constructor：
+在使用 this 之前，我们必须在 Child 的 constructor 中将父 constructor 调用为 super()。
+3.重写一个方法：
+我们可以在一个 Child 方法中使用 super.method() 来调用 Parent 方法。
+```
+class Animal {
+  constructor(name) {
+    this.speed = 0;
+    this.name = name;
+  }
+  run(speed) {
+    this.speed = speed;
+    alert(`${this.name} runs with speed ${this.speed}.`);
+  }
+  stop() {
+    this.speed = 0;
+    alert(`${this.name} stands still.`);
+  }
+}
+
+class Rabbit extends Animal {
+  hide() {
+    alert(`${this.name} hides!`);
+  }
+  stop() {
+    super.stop(); // 调用父类的 stop
+    this.hide(); // 然后 hide
+  }
+}
+let rabbit = new Rabbit("White Rabbit");
+rabbit.run(5); // White Rabbit 以速度 5 奔跑
+rabbit.stop(); // White Rabbit 停止了。White rabbit hide 了！
+```
+#### 静态属性和静态方法
+```
+class Animal {
+  static planet = "Earth";
+  constructor(name, speed) {
+    this.speed = speed;
+    this.name = name;
+  }
+  run(speed = 0) {
+    this.speed += speed;
+    alert(`${this.name} runs with speed ${this.speed}.`);
+  }
+  static compare(animalA, animalB) {
+    return animalA.speed - animalB.speed;
+  }
+}
+
+// 继承于 Animal
+class Rabbit extends Animal {
+  hide() {
+    alert(`${this.name} hides!`);
+  }
+}
+
+let rabbits = [
+  new Rabbit("White Rabbit", 10),
+  new Rabbit("Black Rabbit", 5)
+];
+
+rabbits.sort(Rabbit.compare);
+rabbits[0].run(); // Black Rabbit runs with speed 5.
+alert(Rabbit.planet); // Earth
+```
+#### 私有的和受保护的属性和方法
+1.受保护的字段是自然可被继承的。_waterCount
+2.无法从外部或从继承的类中访问它,只能从类的内部访问它们。私有字段不能通过 this[name] 访问 #waterLimit
+```
+class CoffeeMachine {
+  _water = 0;
+  #waterAmount = 0;
+  get waterAmount() {
+    return this.#waterAmount;
+  }
+  set waterAmount(value) {
+    if (value < 0) throw new Error("Negative water");
+    this.#waterAmount = value;
+  }
+
+  setWater(value) {
+    if (value < 0) throw new Error("Negative water");
+    this._water = value;
+  }
+  getWater() {
+    return this._water;
+  }
+}
+
+new CoffeeMachine().setWaterAmount(100);
+let machine = new CoffeeMachine();
+machine.waterAmount = 100;
+alert(machine.#waterAmount); // Error
+```
+### 扩展内建类
+内建类它们相互间不继承静态方法。
+```
+class PowerArray extends Array {
+  isEmpty() {
+    return this.length === 0;
+  }
+}
+
+let arr = new PowerArray(1, 2, 5, 10, 50);
+alert(arr.isEmpty()); // false
+
+let filteredArr = arr.filter(item => item >= 10);
+alert(filteredArr); // 10, 50
+alert(filteredArr.isEmpty()); // false
+```
+#### 类检查："instanceof"
+instanceof 操作符用于检查一个对象是否属于某个特定的 class。同时，它还考虑了继承。
+使用 Object.prototype.toString 方法来揭示类型
+#### Mixin 模式
+```
+// mixin
+let sayHiMixin = {
+  sayHi() {
+    alert(`Hello ${this.name}`);
+  },
+  sayBye() {
+    alert(`Bye ${this.name}`);
+  }
+};
+
+// 用法：
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+// 拷贝方法
+Object.assign(User.prototype, sayHiMixin);
+
+// 现在 User 可以打招呼了
+new User("Dude").sayHi(); // Hello Dude!
+```

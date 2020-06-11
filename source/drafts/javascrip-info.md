@@ -484,3 +484,166 @@ Object.assign(User.prototype, sayHiMixin);
 // 现在 User 可以打招呼了
 new User("Dude").sayHi(); // Hello Dude!
 ```
+### try...catch...
+```
+try {
+  // 执行此处代码
+  throw new Error("an error");
+} catch(err) {
+  // 如果发生错误，跳转至此处
+  // err 是一个 error 对象
+  if("can't handle the error") {
+      throw err;
+  }
+} finally {
+  // 无论怎样都会在 try/catch 之后执行
+}
+```
+### Promise，async/await
+#### 回调
+#### Promise 
+pending -> fulfilled  pending -> reject
+```
+new Promise((resolve, reject) => {
+  // executor()
+  setTimeout(() => resolve("result"), 2000)
+})
+  .then((result)=>{},(error)=>{})
+  .finally(() => alert("Promise ready"))
+  .then(result => alert(result));
+```
+#### Promise 链
+```
+// 发送一个对 user.json 的请求
+fetch('/article/promise-chaining/user.json')
+  // 将其加载为 JSON
+  .then(response => response.json())
+  // 发送一个到 GitHub 的请求
+  .then(user => fetch(`https://api.github.com/users/${user.name}`))
+  // 将响应加载为 JSON
+  .then(response => response.json())
+  // 显示头像图片（githubUser.avatar_url）3 秒（也可以加上动画效果）
+  .then(githubUser => {
+    let img = document.createElement('img');
+    img.src = githubUser.avatar_url;
+    img.className = "promise-avatar-example";
+    document.body.append(img);
+
+    setTimeout(() => img.remove(), 3000); // (*)
+  });
+```
+#### 使用 promise 进行错误处理
+.catch
+```
+function demoGithubUser() {
+  let name = prompt("Enter a name?", "iliakan");
+  document.body.style.opacity = 0.3; // (1) 开始指示（indication）
+  return loadJson(`https://api.github.com/users/${name}`)
+    .finally(() => { // (2) 停止指示（indication）
+      document.body.style.opacity = '';
+      return new Promise(resolve => setTimeout(resolve)); // (*)
+    })
+    .then(user => {
+      alert(`Full name: ${user.name}.`);
+      return user;
+    })
+    .catch(err => {
+      if (err instanceof HttpError && err.response.status == 404) {
+        alert("No such user, please reenter.");
+        return demoGithubUser();
+      } else {
+        throw err;
+      }
+    });
+}
+demoGithubUser();
+```
+#### Promise API
+Promise.all
+```
+let urls = [
+  'https://api.github.com/users/iliakan',
+  'https://api.github.com/users/remy',
+  'https://api.github.com/users/jeresig'
+];
+
+// 将每个 url 映射（map）到 fetch 的 promise 中
+let requests = urls.map(url => fetch(url));
+
+// Promise.all 等待所有任务都 resolved
+Promise.all(requests)
+  .then(responses => responses.forEach(
+    response => alert(`${response.url}: ${response.status}`)
+  ));
+```
+Promise.allSettled 即使其中一个请求失败，我们仍然对其他的感兴趣
+```
+let urls = [
+  'https://api.github.com/users/iliakan',
+  'https://api.github.com/users/remy',
+  'https://no-such-url'
+];
+
+Promise.allSettled(urls.map(url => fetch(url)))
+  .then(results => { // (*)
+    results.forEach((result, num) => {
+      if (result.status == "fulfilled") {
+        alert(`${urls[num]}: ${result.value.status}`);
+      }
+      if (result.status == "rejected") {
+        alert(`${urls[num]}: ${result.reason}`);
+      }
+    });
+  });
+```
+Promise.race 只等待第一个 settled 的 promise 并获取其结果（或 error）。
+```
+Promise.race([
+  new Promise((resolve, reject) => setTimeout(() => resolve(1), 1000)),
+  new Promise((resolve, reject) => setTimeout(() => reject(new Error("Whoops!")), 2000)),
+  new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000))
+]).then(alert); // 1
+```
+Promise.reject Promise.resolve
+#### 微任务
+.then/catch/finally 处理程序（handler）总是在当前代码完成后才会被调用
+#### async|await
+```
+async function showAvatar() {
+
+  // 读取我们的 JSON
+  let response = await fetch('/article/promise-chaining/user.json');
+  let user = await response.json();
+
+  // 读取 github 用户信息
+  let githubResponse = await fetch(`https://api.github.com/users/${user.name}`);
+  let githubUser = await githubResponse.json();
+
+  // 显示头像
+  let img = document.createElement('img');
+  img.src = githubUser.avatar_url;
+  img.className = "promise-avatar-example";
+  document.body.append(img);
+
+  // 等待 3 秒
+  await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+
+  img.remove();
+
+  return githubUser;
+}
+
+showAvatar();
+```
+```
+async function f() {
+
+  try {
+    let response = await fetch('http://no-such-url');
+  } catch(err) {
+    alert(err); // TypeError: failed to fetch
+  }
+}
+
+f();
+```

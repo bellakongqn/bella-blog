@@ -105,3 +105,5 @@ requestIdelCallback(taskHandler);
 [https://segmentfault.com/a/1190000018250127](https://segmentfault.com/a/1190000018250127)
 [https://segmentfault.com/a/1190000014457824](https://segmentfault.com/a/1190000014457824)
 [https://segmentfault.com/a/1190000017784309](https://segmentfault.com/a/1190000017784309)
+[https://www.youtube.com/watch?v=ZCuYPiUIONs&list=PLb0IAmt7-GS3fZ46IGFirdqKTIxlws7e0&index=6&t=0s](https://www.youtube.com/watch?v=ZCuYPiUIONs&list=PLb0IAmt7-GS3fZ46IGFirdqKTIxlws7e0&index=6&t=0s)
+[https://juejin.im/post/5ab7b3a2f265da2378403e57](https://juejin.im/post/5ab7b3a2f265da2378403e57)

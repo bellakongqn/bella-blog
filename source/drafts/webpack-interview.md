@@ -52,3 +52,39 @@ source map是什么？生产环境怎么用？
 聊一聊Babel原理吧？
 https://webpack.wuhaolin.cn/
 https://juejin.im/post/5e6f4b4e6fb9a07cd443d4a5
+
+
+4. webpack文件监听原理
+在webpack 监听一个文件发生变化的原理是定时的去获取这个文件的最后编辑时间，每次都存下最新的最后编辑时间，如果发现当前获取的和最后一次保存的最后编辑时间不一致，就认为改文件发生了变化。配置项中的watchOptions.poll就是用于控制定时检查的周期，具体含义是检查多少次。
+```
+module.export = {
+	//默认为flase，也就是不开启
+	watch: true,
+	//只有开启监听模式，watchOptions才有意义
+	watchOptions: {
+		//默认为空，不监听的文件或者文件夹，支持正则匹配
+		ignored: /node_modules/,
+		//监听到变化发生后会等300ms再去执行，默认300ms
+		aggregateTimeout: 300,
+		//判断文件是否发生变化是通过不停询问系统指定文件有没有变化实现的，默认每秒问1000次
+		poll:1000
+	}
+}
+```
+需要手动刷新浏览器
+
+5. webpack 热更新原理 
+通过webpack-dev-server 来搭建热更新的开发环境，wds是基于express 的轻量服务器。wds的一个比较大的优势是，它没有磁盘的io,输出完之后放到内存中，而不是输出为文件，所以构建速度会有一个较大的优势。
+webpack-dev-server支持一种hot模式，在该模式下，它尝试使用HMR更新，然后尝试重新加载整个页面
+![](/assets/wds.png)
+
+浏览器的网页通过websocket与服务器建立起一个长连接，
+HMR Server  服务器 
+HMR runtime 浏览器
+HMR HtmlWebpackRepalcementPlugin
+1.当服务器的css/js/html进行了修改的时候
+2.文件系统接收更改并通知webpack
+3.webpack重新编译构建一个或多个模块，并通知HMR Server进行更新
+4.HMR Server 使用webSocket 通知HMR runtime 需要更新，HMR 运行时通过HTTP请求更新jsonp
+5.HMR运行时更换更新中的模块，如果确定这些模块无法更新，则触发整个页面刷新
+如果是css/html发生了变化，网页执行js直接操作dom，局部刷新，如果是js发生了变化，只好刷新整个页面。

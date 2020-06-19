@@ -35,15 +35,15 @@ resolve:{
 
 有哪些常见的Loader？你用过哪些Loader？
 有哪些常见的Plugin？你用过哪些Plugin？
-那你再说一说Loader和Plugin的区别？
-Webpack构建流程简单说一下？
+那你再说一说Loader和Plugin的区别？ ✅
+Webpack构建流程简单说一下？✅
 使用webpack开发时，你用过哪些可以提高效率的插件？
 source map是什么？生产环境怎么用？
 模块打包原理知道吗？
-文件监听原理呢？
-说一下 Webpack 的热更新原理吧？
+文件监听原理呢？✅
+说一下 Webpack 的热更新原理吧？✅
 如何对bundle体积进行监控和分析？
-文件指纹是什么？怎么用？
+文件指纹是什么？怎么用？ ✅
 在实际工程中，配置文件上百行乃是常事，如何保证各个loader按照预想方式工作？
 如何优化 Webpack 的构建速度？
 那代码分割的本质是什么？有什么意义呢？
@@ -82,9 +82,37 @@ webpack-dev-server支持一种hot模式，在该模式下，它尝试使用HMR�
 HMR Server  服务器 
 HMR runtime 浏览器
 HMR HtmlWebpackRepalcementPlugin
+webpack打包过程中将HMR routime 注入到bundle.js里，以便更新是HMR Server 推送更新
 1.当服务器的css/js/html进行了修改的时候
 2.文件系统接收更改并通知webpack
 3.webpack重新编译构建一个或多个模块，并通知HMR Server进行更新
 4.HMR Server 使用webSocket 通知HMR runtime 需要更新，HMR 运行时通过HTTP请求更新jsonp
 5.HMR运行时更换更新中的模块，如果确定这些模块无法更新，则触发整个页面刷新
 如果是css/html发生了变化，网页执行js直接操作dom，局部刷新，如果是js发生了变化，只好刷新整个页面。
+
+解析scss 
+将css 文件单独导出
+new MiniCssStractPlugin({filename:'[name][contenthash:8].css'})
+
+postcss
+[MiniCssStractPlugin.loader, css-loader, sass-loader, 
+	{loader: postcss-loder,
+		options:{
+			plugins:()=> [require('autoprefixer')({
+				browser:[]
+			})]}
+	}]
+
+压缩html html-webpack-plugin
+js uglifyjs-webpack-plugin
+css optimize-css-assets-webpack-plugin
+
+px2rem
+
+autoprefixer + postcss-loader
+
+清理构建产物 clean-webpack-plugin
+
+js|html 内联 raw-loader => <%=require('')%>
+
+css 内联 html-webpack-inline-source-plugin

@@ -77,3 +77,93 @@ console.log('script end') // 11. log : script start-> async1 start -> async2 -> 
 3. 遇到await关键字，await右边的语句会被立即执行然后await下面的代码进入等待状态，等待await得到结果。
 4. await后面如果不是 promise 对象, await会阻塞后面的代码，先执行async外面的同步代码，同步代码执行完，再回到async内部，把这个非promise的东西，作为 await表达式的结果。
 5. await后面如果是 promise 对象，await 也会暂停async后面的代码，先执行async外面的同步代码，等着 Promise 对象 fulfilled，然后把 resolve 的参数作为 await 表达式的运算结果，然后把剩下的 async 函数中的操作放到 then 回调函数中。
+
+await返回Promise
+将后续代码放入then，等Promise.then()结束之后，将后续代码放入微任务
+继续执行
+```
+setTimeout(function () {
+  console.log('8')
+}, 0)
+
+async function async1() {
+  console.log('1')
+  const data = await async2()
+  console.log('6')
+  return data
+}
+
+async function async2() {
+  return new Promise(resolve => {
+    console.log('2')
+    resolve('async2的结果')
+  }).then(data => {
+    console.log('4')
+    return data
+  })
+}
+
+async1().then(data => {
+  console.log('7')
+  console.log(data)
+})
+
+new Promise(function (resolve) {
+  console.log('3')
+  resolve()
+}).then(function () {
+  console.log('5')
+})
+
+1 - 2 - 3 -4 - 5 - 6 - 7 - async2的结果 - 8
+```
+await 未返回Promise
+执行结束外部所有的微任务及同步任务， 然后回到Promise内部继续执行
+```
+async function async1() {
+  console.log('2')
+  await async2()
+  console.log('7')
+}
+
+async function async2() {
+  console.log('3')
+}
+
+setTimeout(function () {
+  console.log('8')
+}, 0)
+
+console.log('1')
+async1()
+
+new Promise(function (resolve) {
+  console.log('4')
+  resolve()
+}).then(function () {
+  console.log('6')
+})
+console.log('5')
+1 - 2 - 3 -4 - 5 - 6 - 7 - 8
+```
+await 后不是异步函数, 运行结束外部同步代码之后
+回到async 内部继续执行
+```
+console.log('1')
+async function async1() {
+  console.log('2')
+  await 'await的结果'
+  console.log('5')
+}
+
+async1()
+console.log('3')
+
+new Promise(function (resolve) {
+  console.log('4')
+  resolve()
+}).then(function () {
+  console.log('6')
+}
+1 -  2 - 3 - 4 - 5 - 6
+```

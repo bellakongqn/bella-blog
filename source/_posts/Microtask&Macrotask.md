@@ -72,5 +72,8 @@ console.log('script end') // 11. log : script start-> async1 start -> async2 -> 
 
 // script start-> async1 start -> async2 -> promise1 -> script end -> async1 end -> promise2 -> settimeout
 ```
-
-未完....
+1. async内部如果没有主动return Promise，那么async会把函数的返回值用Promise包装。
+2. await关键字必须出现在async函数中，await后面不是必须要跟一个异步操作，也可以是一个普通表达式。
+3. 遇到await关键字，await右边的语句会被立即执行然后await下面的代码进入等待状态，等待await得到结果。
+4. await后面如果不是 promise 对象, await会阻塞后面的代码，先执行async外面的同步代码，同步代码执行完，再回到async内部，把这个非promise的东西，作为 await表达式的结果。
+5. await后面如果是 promise 对象，await 也会暂停async后面的代码，先执行async外面的同步代码，等着 Promise 对象 fulfilled，然后把 resolve 的参数作为 await 表达式的运算结果，然后把剩下的 async 函数中的操作放到 then 回调函数中。

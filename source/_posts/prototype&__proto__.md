@@ -64,12 +64,15 @@ console.log(Animal.prototype) // { home: 'love house', constructor: ƒ }
 console.log(animal1.__proto__) // { home: 'love house', constructor: ƒ }
 console.log(Animal.prototype === animal1.__proto__) // true
 ```
-### cpnstructor
+### constructor
 原型中的 constructor 指向构造函数，谁创造这个实例的，那么这个实例的 constructor 就是谁
 
 实例.\_\_proto\_\_ === 构造函数.prototype
+
 prototype.constructor =  构造函数
+
 原型 === 构造函数.prototype
+
 实例.constructor = 构造函数
 ```
 function a () {}

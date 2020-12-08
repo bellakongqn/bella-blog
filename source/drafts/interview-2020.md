@@ -1,6 +1,17 @@
 1. 文字超出
 2. flex
 3. Array.proptype.equals
+```
+Array.prototype.equals = function(other){
+    if(this.length !== other.length) {
+        return false
+    }
+    return Array.prototype.every((x, i) =>{ 
+        x=== other[i]
+    })
+}   
+console.log([1,2,3].equals([1,2,3,4]))
+```
 4. 数组最大元素
 5. border-radius 后 radius 部分会执行吗？
 

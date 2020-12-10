@@ -53,5 +53,23 @@ const insertionSort = (arr) =>{
   return arr;
 }
 ```
+4. 希尔排序   间隔比较
+时间复杂度 最好 平均 O(nlogn) 最坏 O(nlog²n)
+```
+const shellSort = (arr) => {
+  const len = arr.length
+  for(let gap = Math.floor(len /2); gap > 0; gap = Math.floor(gap/2)){
+    for(let i = gap; i< len; i++) {
+      for(let j = i - gap; j >= 0 && arr[j] > arr[j+gap] ; j-=gap){
+        console.log(arr[j] > arr[j+gap])
+        let temp = arr[j];
+        arr[j] = arr[gap + j];
+        arr[gap + j] = temp;
+      }
+    }
+  }
+  console.log(arr);
+}
+```
 
 

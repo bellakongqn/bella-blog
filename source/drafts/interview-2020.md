@@ -12,6 +12,26 @@ Array.prototype.equals = function(other){
 }   
 console.log([1,2,3].equals([1,2,3,4]))
 ```
+Array.prototype.reduce
+```
+Array.prototype.myReduce = function(fn, initValue){
+  // 没有初始值并为空数组 报错
+  if(initValue === undefined && !this.length) {
+    throw new Error('myReduce of empty array with no initial value');
+  }
+  let res = initValue ? initValue : this[0]
+  let i = initValue ? 0 : 1
+  for(i; i< this.length ; i++) {
+    res = fn(res, this[i], i, this)
+  }
+  return res
+}
+```
+```
+Array.isArray = function(arg){
+    return Object.prototype.toString().call(arg) === '[object Array]'
+}
+```
 4. 数组最大元素
 5. border-radius 后 radius 部分会执行吗？
 
@@ -176,7 +196,41 @@ generateURLs(
 ```
 ------------
 1. hooks实现class 生命周期
+
+  constuctor() => useState
+
+  componentDidMount:
+  ```
+  useEffect(()=>{
+
+  },[])
+  ```
+
+  ```
+  componentDidUpdate:
+  const mounted = useRef();
+  useEffect(()=>{
+    if(!mounted.current) {
+      mounted.current = true;
+    }else{
+      console.log('I am didUpdate')
+    }
+  })
+  ```
+  componentWillUnmount: 
+  ```
+   useEffect(()=>{
+     return ()=>{
+
+     }
+   },[])
+  ```
+
 2. 深拷贝 对象
+```
+JSON.parse(JSON.stringy(obj))
+loadsh.deepclone
+```
 3. 排序 复杂度
 4. 遍历二叉树 时间复杂度
 5. 元素垂直居中
@@ -210,3 +264,73 @@ function sub(a,b) {
 }
 add.bind(sub, 5, 3)
 add.bind(sub, 5, 3)() // 调用
+
+
+401 403
+401:未登录
+403：没有权限
+
+301 302
+301：永久重定向
+302：临时重定向
+https://blog.csdn.net/ai2000ai/article/details/80242193
+301 意味着客户端可以对结果进行缓存， 搜索引擎或者浏览器都可以把跳转后的地址缓存下来，下一次不必发送这个请求。
+302 就是客户端必须请求原链接。
+
+NAN === NAN
+typeof NAN  // number
+NAN 代表的是not a number 每个非数字值是不同的
+
+
+实现一个new
+```
+/** 构造函数 */
+function Person(name, age){
+    console.log('2--------------')
+    this.name = name
+    this.age = age
+}
+
+function _new(contructor, ...args){
+    // 继承构造函数的prototype
+    const obj = Object.create (contructor.prototype)
+    console.log('1--------------')
+    // 执行构造函数 并绑定this到创建的对象
+    contructor.apply(obj, args)
+    console.log('3--------------')
+    // 返回创建的对象 即实例
+    return obj
+}
+
+_xm = _new(Person, 'xiaoming', 18)
+console.log(_xm)
+```
+
+实现call
+```
+Function.prototype.myCall =  function(context) {
+    if(typeof this !== 'function'){
+        throw new TypeError('not function')
+    }
+    context = context || window
+    // this 指函数 将this 作为context的属性
+    context.fn = this
+    const arg = [...arguments].slice(1)
+    context.fn(...arg)
+    delete context.fn
+}
+
+const name = 'bella';
+const obj = {
+    name: 'wyatt'
+};
+
+function fn() {
+    console.log(this.name);
+};
+```
+
+实现apply
+```
+```
+

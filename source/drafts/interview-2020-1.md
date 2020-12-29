@@ -88,6 +88,34 @@
    ```
    与 class 组件中 shouldComponentUpdate() 方法不同的是，如果 props 相等，areEqual 会返回 true；如果 props 不相等，则返回 false。这与 shouldComponentUpdate 方法的返回值相反。
 
+11. 三次握手/四次挥手
+第一次SYN=1, seq=x
+client发送一个SYN,指名client打算连接server的端口，以及初始序列号为x,发送完毕后，client进入SYN_SEND状态
+第二次SYN=1, ACK=1, seq=y, ackNum = x+1
+server发回确认包(ACK)应答。即 SYN 标志位和 ACK 标志位均为1。server端选择自己 ISN 序列号，放到 Seq 域里，同时将确认序号ackNum设置为客户的 ISN 加1，即X+1。 发送完毕后，server端进入 SYN_RCVD 状态。
+
+第三次握手(ACK=1，ACKnum=y+1)
+client再次发送确认包(ACK)，SYN 标志位为0，ACK 标志位为1，并且把server发来 ACK 的序号字段+1，放在确定字段中发送给对方，并且在数据段放写ISN的+1发送完毕后，client进入 ESTABLISHED 状态，当server端接收到这个包时，也进入 ESTABLISHED 状态，TCP 握手结束
+
+四次挥手：
+第一次 FIN=1 seq=x
+client发送一个FIN，表示自己没有数据可以发送了，但是仍然可以接受数据。发送完毕后，client进入FIN_WAIT_1状态
+第二次挥手 ACK=1 ackNum= x+1
+server确认client的FIN包，发送一个确认包，表示自己已经接收到了client关闭连接的请求，但是还没有准备好关闭连接。发送完毕后，server进入CLOSE_WAIT状态，client接收到这个确认包之后，进入FIN_WAIT_2状态，等待server关闭连接。
+第三次 FIN=1 seq=y
+server 准备好关闭连接，向client发送结束请求，FIN置为1 发送完毕后，server进入LAST_ACK状态，等待来自client的最后一个ACK
+第四次 ACK=1 ackNum= y+1
+client收到server的关闭请求，发送一个确认包，并进去TIME_WAIT状态，等待可能出现的要求重传的ACK.server接收到这个确认包之后，关闭连接，进入CLOSED状态。 client等待了2MSL之后，没有收到server的ACK,认为server已经正常关闭连接，于是自己也关闭连接，进入CLOSES状态。
+
+建立连接时，被动方服务器端结束CLOSED阶段进入“握手”阶段并不需要任何准备，可以直接返回SYN和ACK报文，开始建立连接。
+释放连接时，被动方服务器，突然收到主动方客户端释放连接的请求时并不能立即释放连接，因为还有必要的数据需要处理，所以服务器先返回ACK确认收到报文，经过CLOSE-WAIT阶段准备好释放连接之后，才能返回FIN释放连接报文。
+
+12. webscoket连接
+先发送一个Upgrade  的请求， 收到101 Switching Protocols 切换协议
+
+13. canvas svg
+canvas js
+svg html SVG更适合用来做动态交互
 
 
 

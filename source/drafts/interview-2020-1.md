@@ -117,6 +117,40 @@ client收到server的关闭请求，发送一个确认包，并进去TIME_WAIT�
 canvas js
 svg html SVG更适合用来做动态交互
 
+滴滴一面
+闭包
+react-diff
+为什么会产生卡顿 js和浏览器渲染互斥
+fiber requestIdeCallback 改变diff 树-> 链表
+一帧 16ms
+setState 同步还是异步
+new做了哪些操作
+css animation transition 区别
+webpack loader plugin 区别
+let const 暂时性死区
+虚拟dom 与真实dom区别
+react 新旧生命周期
+ts 优缺点
+hooks 为什么不能在判断里进行set hooks 顺序调用 会改变数据
+是否看react 源码
+```
+function fun(n,o) { 
+  console.log(o) 
+  return {   
+    fun:function(m){     
+      return fun(m,n);   
+    } 
+  }
+}
+var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3)
+// undefined
+// 0
+// 0
+// 0
+
+```
+https://segmentfault.com/a/1190000004187681
+
 
 
 
